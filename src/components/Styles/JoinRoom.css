@@ -1,0 +1,39 @@
+.joinRoom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.joinRoom h1 {
+  font-size: 48px;
+  margin-bottom: 30px;
+}
+.joinRoom input {
+  padding: 10px 20px;
+  font-size: 24px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #008307;
+  width: 300px;
+}
+.joinRoom input:focus {
+  outline: none;
+}
+.joinRoom .btnContainer {
+  display: flex;
+  justify-content: center;
+}
+.joinRoom button {
+  padding: 10px 20px;
+  font-size: 24px;
+  background-color: #fff;
+  color: #008307;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: background-color 0.3s ease;
+}
+.joinRoom button:hover {
+  background-color: #008307;
+  color: #fff;
+}

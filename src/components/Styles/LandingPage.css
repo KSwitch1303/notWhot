@@ -1,0 +1,116 @@
+/* Styles/LandingPage.css */
+
+/* Basic styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+}
+
+.landingPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  padding: 20px;
+}
+
+.landingPage h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.landingPageBtns {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.landingPageBtns button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.landingPageBtns button:hover {
+  background-color: #0056b3;
+}
+
+.support {
+  margin-top: 20px;
+}
+
+.support h3 {
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.support p {
+  font-size: 1rem;
+  color: #666;
+}
+
+.support a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.support a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .landingPage h1 {
+    font-size: 2rem;
+  }
+
+  .landingPageBtns {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .landingPageBtns button {
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  .support h3 {
+    font-size: 1.25rem;
+  }
+
+  .support p {
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .landingPage h1 {
+    font-size: 1.5rem;
+  }
+
+  .landingPageBtns {
+    gap: 5px;
+  }
+
+  .landingPageBtns button {
+    font-size: 0.875rem;
+    padding: 8px 16px;
+  }
+
+  .support h3 {
+    font-size: 1rem;
+  }
+
+  .support p {
+    font-size: 0.75rem;
+  }
+}

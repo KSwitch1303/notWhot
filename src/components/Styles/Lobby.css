@@ -1,0 +1,67 @@
+.lobby {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.lobby h1 {
+  font-size: 48px;
+  margin-bottom: 30px;
+}
+.leaveBtn {
+  width: 300px;
+  padding: 10px 20px;
+  font-size: 24px;
+  background-color: #fff;
+  color: #008307;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+.leaveBtn:hover {
+  background-color: #008307;
+  color: #fff;
+}
+.playerCard {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: #016105;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.player h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+.player p {
+  font-size: 18px;
+}
+.readyBtn {
+  width: 300px;
+  padding: 10px 20px;
+  font-size: 24px;
+  background-color: #fff;
+  color: #008307;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+.readyBtn:hover {
+  background-color: #008307;
+  color: #fff;
+}

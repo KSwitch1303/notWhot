@@ -1,0 +1,39 @@
+.createRoom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.createRoom h1 {
+  font-size: 48px;
+  margin-bottom: 30px;
+}
+.createRoom input {
+  padding: 10px 20px;
+  font-size: 24px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #008307;
+  width: 300px;
+}
+.createRoom input:focus {
+  outline: none;
+}
+.createRoom .btnContainer {
+  display: flex;
+  justify-content: center;
+}
+.createRoom button {
+  padding: 10px 20px;
+  font-size: 24px;
+  background-color: #fff;
+  color: #008307;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: background-color 0.3s ease;
+}
+.createRoom button:hover {
+  background-color: #008307;
+  color: #fff;
+}

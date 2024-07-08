@@ -1,78 +1,168 @@
+/* General styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+/* Game Container */
 .game {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 50px;
-  height: 100%;
-  width: 80%;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
 }
-.game h1{
-  font-size: 48px;
+
+/* Headers */
+.game h1 {
+  font-size: 2.5rem;
   margin: 5px;
+  text-align: center;
 }
+
 .game h2 {
-  font-size: 24px;
+  font-size: 1.5rem;
   margin: 5px;
+  text-align: center;
 }
+
+/* Players Container */
 .players {
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
+  width: 100%;
+  margin-top: 20px;
 }
-.otherplayers {
+
+/* Player Card */
+.Gameplayer {
+  flex: 1 1 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: #016105;
   padding: 10px;
-  border-radius: 5px;
-  margin-top: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
 }
+
+.Gameplayer:hover {
+  transform: scale(1.05);
+}
+
 .otherplayers h3 {
-  font-size: 24px;
+  font-size: 1.5rem;
   margin: 5px;
 }
+
+/* Market */
 .market {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 10px;
-  border-radius: 5px;
+  border-radius: 10px;
+  margin-top: 20px;
 }
+
 .usemarket {
-  width: 200px;
-  height: 200px;
+  /* width: 100px; */
+  height: 150px;
   margin-bottom: 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
 }
+
+.usemarket:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.usemarket:hover:not(:disabled) {
+  transform: scale(1.1);
+}
+
+/* Game Space */
 .gameSpace {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  width: 100%;
+  margin-top: 20px;
 }
 
 .playedCards {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
 }
+
+.card {
+  /* width: 100px; */
+  height: 150px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.1);
+}
+
 .me {
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
-  background-color: #ffffff;
+  background-color: #fff;
   padding: 10px;
-  border-radius: 5px;
-  margin-top: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-.card {
-  height: 200px;
-  margin-right: 10px;
-  transition: all 0.3s ease;
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .game h1 {
+    font-size: 2rem;
+  }
+
+  .game h2 {
+    font-size: 1.2rem;
+  }
+
+  .Gameplayer {
+    flex: 1 1 200px;
+  }
+
+  .card, .usemarket {
+    /* width: 80px; */
+    height: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .game h1 {
+    font-size: 1.1rem;
+  }
+
+  .game h2 {
+    font-size: 1rem;
+  }
+
+  .Gameplayer {
+    flex: 1 1 150px;
+  }
+
+  .card, .usemarket {
+    /* width: 60px; */
+    height: 100px;
+  }
 }

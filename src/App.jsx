@@ -25,6 +25,7 @@ function App() {
   
   const [market, setMarket] = useState([]);
   const [playedCards, setPlayedCards] = useState([]);
+  const [lobby, setLobby] = useState("");
 
   useEffect(() => {
     if (!loggedIn) navigate("/");
@@ -33,7 +34,7 @@ function App() {
   }, [loggedIn]);
   return (
     <UserContext.Provider value={{loggedIn, setLoggedIn, username, setUsername, bank, setBank, accountNO, setAccountNO, accountName, setAccountName, balance, setBalance}}>
-      <GameContext.Provider value={{connected, setConnected, room, setRoom, players, setPlayers, page, setPage, username, setUsername, market, setMarket, playedCards, setPlayedCards}}>
+      <GameContext.Provider value={{connected, setConnected, room, setRoom, players, setPlayers, page, setPage, username, setUsername, market, setMarket, playedCards, setPlayedCards, lobby, setLobby}}>
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/signup" element={<Signup />} />

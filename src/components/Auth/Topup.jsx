@@ -1,3 +1,4 @@
+import '../Styles/Topup.css'
 import { useState } from "react";
 import axios from 'axios';
 
@@ -30,16 +31,17 @@ const Topup = (props) => {
       setIsPending(false);
     } catch (error) {
       alert(error);
+      setIsPending(false);
     }
-      
   }
+
   return ( 
-    <div className="topup">
+    <div className="topupPage">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></link>
       <h1>Top up</h1>
       <p>Make Payment to the account below, your in game account will be credited within an hour</p>
       <h3>Account Name: Misongo Ebimietei Favour</h3>
-      <h3>Account Number: 8138267700 <span><i class="fa-solid fa-copy" onClick={
+      <h3>Account Number: 8138267700 <span><i className="fa-solid fa-copy" onClick={
         () => {
           navigator.clipboard.writeText("8138267700")
           alert("Copied!")
@@ -49,11 +51,11 @@ const Topup = (props) => {
       <form className="topupForm" onSubmit={handleSubmit}>
         <input disabled={isPending} onChange={(e) => setAmount(e.target.value)} value={amount} type="text" placeholder="Enter Amount Paid" required />
         <input disabled={isPending} onChange={(e) => setTno(e.target.value)} value={tno} type="text" placeholder="Enter Transaction Number" required />
-        <button type="submit">Submit</button>
+        <button type="submit" disabled={isPending}>{isPending ? "Processing..." : "Submit"}</button>
       </form>
-      <button onClick={() => props.setPage("home")}>Home</button>
+      <button className="home-button" onClick={() => props.setPage("home")}>Home</button>
     </div>
-   );
+  );
 }
  
 export default Topup;

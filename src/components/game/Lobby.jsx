@@ -12,13 +12,21 @@ const Lobby = (props) => {
   };
 
   useEffect(() => {
+    props.socket.emit("joinRoom", { lobbyName: props.lobby, username: props.username });
+    // alert('Joined')
+  }, [])
+
+  useEffect(() => {
+    props.socket.on("roomCode", (data) => {
+      props.setRoom(data.roomCode);
+    })
     props.socket.on("userJoined", (data) => {
       alert(data.username + " joined the room");
     });
 
-    props.socket.on("userLeft", (data) => {
-      alert(data.username + " left the room");
-    });
+    // props.socket.on("userLeft", (data) => {
+    //   alert(data.username + " left the room");
+    // });
 
     props.socket.on("playersUpdated", (data) => {
       props.setPlayers(data.players);
@@ -34,7 +42,7 @@ const Lobby = (props) => {
       props.setPlayerCards(data.cards);
     });
 
-    return () => {
+    return () => { 
       props.socket.off("userJoined");
       props.socket.off("userLeft");
       props.socket.off("playersUpdated");

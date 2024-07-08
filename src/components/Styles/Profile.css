@@ -1,0 +1,99 @@
+/* Base styles */
+.profilePage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  /* min-height: 100vh; */
+}
+
+.profilePage h1 {
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.profileForm {
+  width: 100%;
+  max-width: 500px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profileFormContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.profilePage .formgroup {
+  margin-bottom: 15px;
+}
+
+.profilePage .formgroup label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 1em;
+  color: #555;
+}
+
+.profilePage .formgroup input,.profilePage  .formgroup select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1em;
+}
+
+.profileFormContent button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.profileFormContent button:hover {
+  background-color: #0056b3;
+}
+
+.profileFormContent button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.profilePage .home-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #28a745;
+  color: white;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.profilePage .home-button:hover {
+  background-color: #218838;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .profilePage h1 {
+    font-size: 1.5em;
+  }
+
+  .profileForm {
+    padding: 15px;
+  }
+
+  .profileFormContent button, .profilePage .home-button {
+    font-size: 0.9em;
+  }
+}

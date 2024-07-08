@@ -98,26 +98,21 @@ const Game = (props) => {
       <h2>Current Turn: {currentPlayer ? currentPlayer.username : 'Waiting...'}</h2>
       
       {/* <h2>Players</h2> */}
-      <div className="players">
-        {Object.values(props.players).map((player) => (
-          <div className="Gameplayer" key={player.username}>
-            {player.username !== props.username ? (
+      {Object.values(props.players).map((player) => (
+        <div className="dasd" key={player.username}>
+           {player.username !== props.username ? (
+            <div className="Gameplayer" key={player.username}>
               <div className="otherplayers">
                 <h3>{player.username} {player.turn && '(Turn)'}</h3>
-                {/* <p>Wager: {player.wager}</p> */}
-                {player.username === props.username && <h4>Cards</h4>}
-                {player.cards.map((card, index) => (
-                  player.username === props.username ? (
-                    <button onClick={() => playCard(card)} key={index}>{card}</button>
-                  ) : null
-                ))}
               </div>
-            ) : null}
-            
-            
-          </div>
-        ))}
-      </div>
+            </div>
+          ) : null}
+        </div>
+       
+        )
+      )}
+     
+    
       <div className="gameSpace">
         <div className="market">
           <img className='usemarket' onClick={useMarket} disabled={!props.players[props.username].turn} src="/WhotCards/back.png" alt="usemarket" />
@@ -134,24 +129,14 @@ const Game = (props) => {
         </div>
       </div>
       
-      
-      {Object.values(props.players).map((player) => (
-          <div className="Gameplayer" key={player.username}>
-            {player.username === props.username ? (
-              <div className="me">
-                {/* <h3>{player.turn && '(Current Turn)'}</h3> */}
-                {player.cards.map((card, index) => (
-                  player.username === props.username ? (
-                    // <button onClick={() => playCard(card)} key={index}>{card}</button>
-                    <img onClick={() => playCard(card)} className='card' src={`/WhotCards/${card}.png`} alt={card} key={index} />
-                  ) : null
-                ))}
-              </div>
-            ) : null}
-            
-            
-          </div>
-        ))}
+      <div className="Gameplayer">
+        <div className="me">
+          {props.players[props.username].cards.map((card, index) => (
+            <img onClick={() => playCard(card)} className='card' src={`/WhotCards/${card}.png`} alt={card} key={index} />
+          ))}
+        </div>
+      </div> 
+     
       
     </div>
   );

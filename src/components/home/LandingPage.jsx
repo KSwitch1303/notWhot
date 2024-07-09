@@ -13,7 +13,7 @@ const LandingPage = () => {
         </div>
         <div className="support">
           <h3>Support</h3>
-          <p>Have questions, suggestions, or complaints? Contact us on <a href="https://wa.me/2348084929504" target="_blank">WhatsApp <i class="fa-brands fa-whatsapp"></i></a></p>
+          <p>Have questions, suggestions, or complaints? Contact us on <a href="https://wa.me/2349053285723" target="_blank">WhatsApp <i class="fa-brands fa-whatsapp"></i></a></p>
         </div>
       </div>
     </div>

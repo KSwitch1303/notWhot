@@ -54,7 +54,7 @@ const Lobby = (props) => {
 
   return (
     <div className="lobby">
-      <h1>Lobby {props.room}</h1>
+      {/* <h1>Lobby {props.room}</h1> */}
       <button className='leaveBtn' onClick={leaveRoom}>Leave Room</button>
       <div className="playerCard">
         {Object.values(props.players).map((player) => (

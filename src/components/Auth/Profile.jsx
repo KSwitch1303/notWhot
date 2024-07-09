@@ -49,17 +49,7 @@ const Profile = (props) => {
         <form className="profileFormContent" onSubmit={handleSubmit}>
           <div className="formgroup">
             <label htmlFor="bank">Bank<span>*</span></label>
-            <select disabled={isPending} onChange={(e) => setFbank(e.target.value)} value={fbank} name="bank" id="bank" required>
-              <option value="" disabled>Select Bank</option>
-              <option value="Opay">Opay</option>
-              <option value="Palmpay">Palmpay</option>
-              <option value="Wema">Wema</option>
-              <option value="Zenith">Zenith</option>
-              <option value="UBA">UBA</option>
-              <option value="GTBank">GT Bank</option>
-              <option value="FirstBank">First Bank</option>
-              <option value="Access">Access</option>
-            </select>
+            <input disabled={isPending} onChange={(e) => setFbank(e.target.value)} value={fbank} type="text" id="bank" name="bank" required />
           </div>
           <div className="formgroup">
             <label htmlFor="accountNO">Account Number<span>*</span></label>

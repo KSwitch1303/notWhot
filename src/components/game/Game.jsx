@@ -1,5 +1,7 @@
 import '../Styles/Game.css'
 import { useEffect } from "react";
+import Sound from '../../Assets/Sounds/playCard.wav';
+import Sound2 from '../../Assets/Sounds/useMarket.wav';
 let pTurn = false;
 const Game = (props) => {
   useEffect(() => {
@@ -35,8 +37,20 @@ const Game = (props) => {
   const useMarket = () => {
     if (props.players[props.username].turn) {
       props.socket.emit("useMarket", { roomCode: props.room, username: props.username });
+
+      playSound2();
     }
   };
+
+  const playSound = () => {
+    const audio = new Audio(Sound);
+    audio.play();
+  }
+
+  const playSound2 = () => {
+    const audio = new Audio(Sound2);
+    audio.play();
+  }
 
   const checkCard = (card) => {
     console.log(props.playedCards[props.playedCards.length - 1]);
@@ -69,6 +83,7 @@ const Game = (props) => {
           break;
         default:
           props.socket.emit("playCard", { roomCode: props.room, username: props.username, card });
+          playSound();
           break;
       }
     } else {

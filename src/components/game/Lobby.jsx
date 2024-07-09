@@ -1,10 +1,11 @@
 import '../Styles/Lobby.css';
 import { useEffect } from "react";
-
 const Lobby = (props) => {
+  
   const leaveRoom = () => {
     props.socket.emit("leaveRoom", { roomCode: props.room, username: props.username });
-    window.location.reload();
+    props.setPage("home");
+    // window.location.reload();
   };
 
   const ready = () => {

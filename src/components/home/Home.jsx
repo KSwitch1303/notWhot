@@ -11,6 +11,7 @@ import Lobby from '../game/Lobby';
 import Navbar from '../Navbar';
 import Profile from '../Auth/Profile';
 import Topup from '../Auth/Topup';
+import Withdraw from '../Auth/Withdraw';
 import Transactions from './Transactions';
 const apiUrl = process.env.REACT_APP_API_URL
 const socket = io.connect(apiUrl);
@@ -20,11 +21,13 @@ const Home = () => {
   
   return ( 
     <div className="home">
-      <Navbar username={username} balance={balance} setLoggedIn={setLoggedIn} setPage={setPage}/>
+      {page !== "game" && <Navbar username={username} balance={balance} setLoggedIn={setLoggedIn} setPage={setPage}/>}
+      
       <div className="homeContent">
         {page === "home" && <HomeContent setPage={setPage} username={username} setLobby={setLobby}/>}
         {page === "profile" && <Profile username={username} setPage={setPage}/>}
         {page === "topup" && <Topup username={username} setPage={setPage}/>}
+        {page === "withdraw" && <Withdraw username={username} setPage={setPage}/>}
         {page === "transactions" && <Transactions username={username} setPage={setPage}/>}
         {page === "createRoom" && <CreateRoom setPage={setPage} socket={socket} setRoom={setRoom} setPlayers={setPlayers} players={players} username={username} setUsername={setUsername}/>}
         {page === "joinRoom" && <JoinRoom setPage={setPage} socket={socket} setRoom={setRoom} setPlayers={setPlayers} players={players} username={username} setUsername={setUsername}/>}

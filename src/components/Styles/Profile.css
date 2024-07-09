@@ -5,23 +5,31 @@
   align-items: center;
   padding: 20px;
   font-family: Arial, sans-serif;
-  background-color: #f8f9fa;
+  background-color: #000000; /* match the semi-transparent background */
+  color: #fff;
   /* min-height: 100vh; */
+  text-align: center;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  backdrop-filter: saturate(180%) blur(10px); /* frosted glass effect */
 }
 
 .profilePage h1 {
-  font-size: 2em;
+  font-size: 2.5rem;
   margin-bottom: 20px;
-  color: #333;
+  color: #fff;
 }
 
 .profileForm {
   width: 100%;
   max-width: 500px;
-  background-color: #fff;
+  background-color: rgba(0, 0, 0, 0.9);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  backdrop-filter: saturate(180%) blur(10px);
 }
 
 .profileFormContent {
@@ -36,16 +44,16 @@
 .profilePage .formgroup label {
   display: block;
   margin-bottom: 5px;
-  font-size: 1em;
-  color: #555;
+  font-size: 1rem;
+  color: #ccc;
 }
 
-.profilePage .formgroup input,.profilePage  .formgroup select {
+.profilePage .formgroup input, .profilePage .formgroup select {
   width: 100%;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  font-size: 1em;
+  font-size: 1rem;
 }
 
 .profileFormContent button {
@@ -53,14 +61,16 @@
   padding: 10px;
   border: none;
   border-radius: 4px;
-  background-color: #007bff;
+  background-color: #28a745;
   color: white;
-  font-size: 1em;
+  font-size: 1rem;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .profileFormContent button:hover {
-  background-color: #0056b3;
+  background-color: #218838;
+  transform: scale(1.05);
 }
 
 .profileFormContent button:disabled {
@@ -73,20 +83,22 @@
   padding: 10px 20px;
   border: none;
   border-radius: 4px;
-  background-color: #28a745;
+  background-color: #007bff;
   color: white;
-  font-size: 1em;
+  font-size: 1rem;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .profilePage .home-button:hover {
-  background-color: #218838;
+  background-color: #0056b3;
+  transform: scale(1.05);
 }
 
 /* Mobile styles */
 @media (max-width: 768px) {
   .profilePage h1 {
-    font-size: 1.5em;
+    font-size: 2rem;
   }
 
   .profileForm {
@@ -94,6 +106,6 @@
   }
 
   .profileFormContent button, .profilePage .home-button {
-    font-size: 0.9em;
+    font-size: 0.9rem;
   }
 }

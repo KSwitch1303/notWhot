@@ -94,7 +94,7 @@ const Game = (props) => {
 
   return (
     <div className="game">
-      <h1>Game Room: {props.room}</h1>
+      {/* <h1>Game Room: {props.room}</h1> */}
       <h2>Current Turn: {currentPlayer ? currentPlayer.username : 'Waiting...'}</h2>
       
       {/* <h2>Players</h2> */}
@@ -103,7 +103,7 @@ const Game = (props) => {
            {player.username !== props.username ? (
             <div className="Gameplayer" key={player.username}>
               <div className="otherplayers">
-                <h3>{player.username} {player.turn && '(Turn)'}</h3>
+                <h3>Opponent: {player.username} {player.turn && '(Turn)'}</h3>
               </div>
             </div>
           ) : null}

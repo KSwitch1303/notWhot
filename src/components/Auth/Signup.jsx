@@ -57,46 +57,48 @@ const Signup = () => {
   }
   return ( 
     <div className="signup">
-      <h1>Sign Up</h1>
-      <div className="signupForm">
-        <form className="signupFormContent" onSubmit={handleSubmit}>
-          <div className="formgroup">
-            <label htmlFor="username">Username<span>*</span></label>
-            <input disabled={isPending} onChange={(e) => setfUsername(e.target.value)} value={fusername} type="text" id="username" name="username" required />
-          </div>
-          <div className="formgroup">
-            <label htmlFor="password">Password<span>*</span></label>
-            <input disabled={isPending} onChange={(e) => setPassword(e.target.value)} value={password} type="password" id="password" name="password" required />
-          </div>
-          <div className="formgroup">
-            <label htmlFor="confirmPassword">Confirm Password<span>*</span></label>
-            <input disabled={isPending} onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword} type="password" id="confirmPassword" name="confirmPassword" required />
-          </div>
-          <div className="formgroup">
-            <select disabled={isPending} onChange={(e) => setfBank(e.target.value)} value={fbank} name="bank" id="bank" required>
-              <option value="" disabled>Select Bank</option>
-              <option value="Opay">Opay</option>
-              <option value="Palmpay">Palmpay</option>
-              <option value="Wema">Wema</option>
-              <option value="Zenith">Zenith</option>
-              <option value="UBA">UBA</option>
-              <option value="GTBank">GT Bank</option>
-              <option value="FirstBank">Firs tBank</option>
-              <option value="Access">Access</option>
-            </select>
-          </div>
-          <div className="formgroup">
-            <label htmlFor="accountNO">Account Number<span>*</span></label>
-            <input disabled={isPending} onChange={(e) => setfAccountNO(e.target.value)} value={faccountNO} type="text" id="accountNO" name="accountNO" required />
-          </div>
-          <div className="formgroup">
-            <label htmlFor="accountName">Account Name<span>*</span></label>
-            <input disabled={isPending} onChange={(e) => setfAccountName(e.target.value)} value={faccountName} type="text" id="accountName" name="accountName" required />
-          </div>
-          
-          <button type="submit" disabled={isPending}>{isPending ? "Signing up..." : "Sign Up"}</button>
-        </form>
-        <p>Already have an account? <Link to="/login" disabled={isPending}>Login</Link></p>
+      <div className="signupContent">
+        <h1>Sign Up</h1>
+        <div className="signupForm">
+          <form className="signupFormContent" onSubmit={handleSubmit}>
+            <div className="formgroup">
+              <label htmlFor="username">Username<span>*</span></label>
+              <input disabled={isPending} onChange={(e) => setfUsername(e.target.value)} value={fusername} type="text" id="username" name="username" required />
+            </div>
+            <div className="formgroup">
+              <label htmlFor="password">Password<span>*</span></label>
+              <input disabled={isPending} onChange={(e) => setPassword(e.target.value)} value={password} type="password" id="password" name="password" required />
+            </div>
+            <div className="formgroup">
+              <label htmlFor="confirmPassword">Confirm Password<span>*</span></label>
+              <input disabled={isPending} onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword} type="password" id="confirmPassword" name="confirmPassword" required />
+            </div>
+            <div className="formgroup">
+              <select disabled={isPending} onChange={(e) => setfBank(e.target.value)} value={fbank} name="bank" id="bank" required>
+                <option value="" disabled>Select Bank</option>
+                <option value="Opay">Opay</option>
+                <option value="Palmpay">Palmpay</option>
+                <option value="Wema">Wema</option>
+                <option value="Zenith">Zenith</option>
+                <option value="UBA">UBA</option>
+                <option value="GTBank">GT Bank</option>
+                <option value="FirstBank">Firs tBank</option>
+                <option value="Access">Access</option>
+              </select>
+            </div>
+            <div className="formgroup">
+              <label htmlFor="accountNO">Account Number<span>*</span></label>
+              <input disabled={isPending} onChange={(e) => setfAccountNO(e.target.value)} value={faccountNO} type="text" id="accountNO" name="accountNO" required />
+            </div>
+            <div className="formgroup">
+              <label htmlFor="accountName">Account Name<span>*</span></label>
+              <input disabled={isPending} onChange={(e) => setfAccountName(e.target.value)} value={faccountName} type="text" id="accountName" name="accountName" required />
+            </div>
+            
+            <button type="submit" disabled={isPending}>{isPending ? "Signing up..." : "Sign Up"}</button>
+          </form>
+          <p>Already have an account? <Link to="/login" disabled={isPending}>Login</Link></p>
+        </div>
       </div>
     </div>
    );

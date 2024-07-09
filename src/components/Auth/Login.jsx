@@ -49,20 +49,22 @@ const Login = () => {
   }
   return ( 
     <div className="login">
-      <h1>Login</h1>
-      <div className="loginForm">
-        <form className="loginFormContent" onSubmit={handleSubmit}>
-          <div className="formgroup">
-            <label htmlFor="username">Username</label>
-            <input disabled={isPending} onChange={(e) => setUsername(e.target.value)} value={username} type="text" id="username" name="username" required />
-          </div>
-          <div className="formgroup">
-            <label htmlFor="password">Password</label>
-            <input disabled={isPending} onChange={(e) => setPassword(e.target.value)} value={password} type="password" id="password" name="password" required />
-          </div>
-          <button disabled={isPending} type="submit">{isPending ? "Logging in..." : "Login"}</button>
-        </form>
-        <p>Don't have an account? <Link to="/signup" disabled={isPending}>Sign Up</Link></p>
+      <div className="loginContent">
+        <h1>Login</h1>
+        <div className="loginForm">
+          <form className="loginFormContent" onSubmit={handleSubmit}>
+            <div className="formgroup">
+              <label htmlFor="username">Username</label>
+              <input disabled={isPending} onChange={(e) => setUsername(e.target.value)} value={username} type="text" id="username" name="username" required />
+            </div>
+            <div className="formgroup">
+              <label htmlFor="password">Password</label>
+              <input disabled={isPending} onChange={(e) => setPassword(e.target.value)} value={password} type="password" id="password" name="password" required />
+            </div>
+            <button disabled={isPending} type="submit">{isPending ? "Logging in..." : "Login"}</button>
+          </form>
+          <p>Don't have an account? <Link to="/signup" disabled={isPending}>Sign Up</Link></p>
+        </div>
       </div>
     </div>
    );

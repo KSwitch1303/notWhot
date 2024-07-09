@@ -35,7 +35,6 @@ const Admin = () => {
         <table>
           <thead>
             <tr>
-              {/* <th>Transaction ID</th> */}
               <th>Receiver</th>
               <th>Sender</th>
               <th>Amount</th>
@@ -47,7 +46,6 @@ const Admin = () => {
           <tbody>
             {transactions.map((transaction) => (
               <tr key={transaction._id}>
-                {/* <td>{transaction._id}</td> */}
                 <td>{transaction.receiver}</td>
                 <td>{transaction.sender}</td>
                 <td>{transaction.amount}</td>

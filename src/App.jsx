@@ -6,6 +6,7 @@ import Home from "./components/home/Home";
 import LandingPage from "./components/home/LandingPage";
 import Signup from "./components/Auth/Signup";
 import Login from "./components/Auth/Login";
+import Admin from "./components/Admin";
 function App() {
   const navigate = useNavigate();
 
@@ -38,6 +39,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path="/login" element={<Login />} />
           <Route path="/notWhot" element={<Home />} />
         </Routes>

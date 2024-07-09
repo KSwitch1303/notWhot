@@ -1,10 +1,12 @@
 import "../../Styles/Transactions.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import PropTypes from "prop-types";
 
 const Transactions = (props) => {
   const [transactions, setTransactions] = useState([]);
   const [isPending, setIsPending] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     setIsPending(true);
@@ -18,12 +20,14 @@ const Transactions = (props) => {
       );
       if (response.data.success) {
         setTransactions(response.data.transactions);
-        setIsPending(false);
+      } else {
+        setError("Failed to fetch transactions.");
       }
     } catch (error) {
-      console.error(
-        `${process.env.REACT_APP_API_URL}/getTransactions/${props.username}`
-      );
+      setError("An error occurred while fetching transactions.");
+      console.error(error);
+    } finally {
+      setIsPending(false);
     }
   };
 
@@ -33,11 +37,14 @@ const Transactions = (props) => {
       <div className="transactionContent">
         {isPending ? (
           <p>Loading...</p>
+        ) : error ? (
+          <p className="error">{error}</p>
         ) : (
           <table>
+            <caption>Transaction Details</caption>
             <thead>
               <tr>
-                <th>Transaction Number</th>
+                <th>Tx No</th>
                 <th>Amount</th>
                 <th>Status</th>
                 <th>Date</th>
@@ -58,6 +65,10 @@ const Transactions = (props) => {
       </div>
     </div>
   );
+};
+
+Transactions.propTypes = {
+  username: PropTypes.string.isRequired,
 };
 
 export default Transactions;

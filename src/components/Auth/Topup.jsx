@@ -25,6 +25,7 @@ const Topup = (props) => {
       const data = await response.data;
       if (data.success) {
         alert(data.message);
+        props.setPage('transactions');
       } else {
         alert(data.message);
       }

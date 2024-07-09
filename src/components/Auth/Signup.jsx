@@ -74,17 +74,8 @@ const Signup = () => {
               <input disabled={isPending} onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword} type="password" id="confirmPassword" name="confirmPassword" required />
             </div>
             <div className="formgroup">
-              <select disabled={isPending} onChange={(e) => setfBank(e.target.value)} value={fbank} name="bank" id="bank" required>
-                <option value="" disabled>Select Bank</option>
-                <option value="Opay">Opay</option>
-                <option value="Palmpay">Palmpay</option>
-                <option value="Wema">Wema</option>
-                <option value="Zenith">Zenith</option>
-                <option value="UBA">UBA</option>
-                <option value="GTBank">GT Bank</option>
-                <option value="FirstBank">Firs tBank</option>
-                <option value="Access">Access</option>
-              </select>
+              <label htmlFor="bank">Bank<span>*</span></label>
+              <input disabled={isPending} onChange={(e) => setfBank(e.target.value)} value={fbank} type="text" id="bank" name="bank" required />
             </div>
             <div className="formgroup">
               <label htmlFor="accountNO">Account Number<span>*</span></label>

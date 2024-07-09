@@ -1,8 +1,36 @@
 import './index.css';
-import { useState } from 'react';
-
+import { useEffect, useState } from 'react';
+import sound from '../../Assets/Sounds/backgroundMusic.wav'; // Use import for better path resolution
+const audio = new Audio(sound);
 const Navbar = (props) => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  useEffect(() => {
+    if (isMuted) {
+      stop();
+    } else {
+      play();
+    }
+  },[isMuted])
+
+  const play = () => {
+    audio.loop = true;
+    // make the loop smoother
+    audio.ontimeupdate = () => {
+      if (audio.currentTime > audio.duration - 0.2) {
+        audio.currentTime = 0.1;
+      }
+    };
+    audio.play()
+      .then(() => {
+      })
+      .catch(error => {
+        console.error("Error playing audio:", error);
+      });
+  }
+  const stop = () => {
+    audio.pause();
+  }
 
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
@@ -21,6 +49,7 @@ const Navbar = (props) => {
         <h1 className="topup" onClick={() => props.setPage("topup")} title="Top-up"><i className="fa-solid fa-wallet"></i></h1>
         <h1 className="withdraw" onClick={() => props.setPage("withdraw")} title="Withdraw"><i className="fa-solid fa-hand-holding-dollar"></i></h1>
         <h1 className='transactions' onClick={() => props.setPage("transactions")} title="Transactions"><i className="fa-solid fa-receipt"></i></h1>
+        <h1 className="mute" onClick={() => setIsMuted(!isMuted)} title="Mute">{isMuted ? <i className="fa-solid fa-volume-xmark" onClick={() => setIsMuted(false)}></i> : <i className="fa-solid fa-volume-high" onClick={() => setIsMuted(true)}></i>}</h1>
         <h1 className="logout" onClick={() => props.setLoggedIn(false)} title="Logout"><i className="fa-solid fa-right-from-bracket"></i></h1>
       </div>
 
@@ -33,6 +62,7 @@ const Navbar = (props) => {
         <h1 className="topup" onClick={() => { props.setPage("topup"); toggleDropdown(); }}><i className="fa-solid fa-wallet"></i> Top-up</h1>
         <h1 className="withdraw" onClick={() => { props.setPage("withdraw"); toggleDropdown(); }}><i className="fa-solid fa-hand-holding-dollar"></i> Withdraw</h1>
         <h1 className='transactions' onClick={() => { props.setPage("transactions"); toggleDropdown(); }}><i className="fa-solid fa-receipt"></i> Transactions</h1>
+        <h1 className="mute" onClick={() => { setIsMuted(!isMuted); toggleDropdown(); }}><i className="fa-solid fa-volume-high"></i> Mute</h1>
         <h1 className="logout" onClick={() => { props.setLoggedIn(false); toggleDropdown(); }}><i className="fa-solid fa-right-from-bracket"></i> Logout</h1>
       </div>
     </div>

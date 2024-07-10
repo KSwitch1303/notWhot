@@ -41,7 +41,7 @@ const Home = () => {
       {page !== "game" && <Navbar username={username} balance={balance} setLoggedIn={setLoggedIn} setPage={setPage}/>}
       
       <div className={homeStyle}>
-        {page === "home" && <HomeContent setPage={setPage} username={username} setLobby={setLobby}/>}
+        {page === "home" && <HomeContent setPage={setPage} username={username} setLobby={setLobby} balance={balance} setBalance={setBalance}/>}
         {page === "profile" && <Profile username={username} setPage={setPage}/>}
         {page === "topup" && <Topup username={username} setPage={setPage}/>}
         {page === "withdraw" && <Withdraw username={username} setPage={setPage}/>}

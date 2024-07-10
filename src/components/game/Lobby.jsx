@@ -40,7 +40,7 @@ const Lobby = (props) => {
       props.setMarket(data.market);
       props.setPlayedCards(data.playedCards);
       const response = await axios.post(`${apiUrl}/placeBet`, { roomCode: props.room, username: props.username, amount: props.lobby });
-      alert(response.data.message);
+      // alert(response.data.message);
       props.setPage("game");
     });
 

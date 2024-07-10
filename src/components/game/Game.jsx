@@ -13,6 +13,7 @@ const Game = (props) => {
   const [winStatus, setWinStatus] = useState('');
   const [winPopup, setWinPopup] = useState(false);
   const [needType, setNeedType] = useState('');
+  const [timer, setTimer] = useState(120);
   const cardFullname = {
     't': "TRIANGLE",
     's': "SQUARE",
@@ -28,6 +29,24 @@ const Game = (props) => {
       playSound();
     }
   },[need])
+  const timerTick = () => setInterval(() => {
+    if (timer > 0) {
+      props.socket.emit("updateTimer", { roomCode: props.room, username: props.username });
+    } else {
+      if (pTurn === true) {
+        winStatus = 'loss';
+      } else {
+        winStatus = 'win';
+      }
+      props.socket.emit('endGame', {
+        room: props.roomCode,
+        username: props.username,
+        amount: props.lobby * (props.lobby * 0.2),
+        winStatus,
+        wager: props.wager
+      })
+    }
+  }, 1000);
   useEffect(() => {
     // Handle any real-time game updates here
     props.socket.on("playersUpdated", (data) => {

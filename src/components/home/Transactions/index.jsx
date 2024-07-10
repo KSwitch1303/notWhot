@@ -54,7 +54,7 @@ const Transactions = (props) => {
               {transactions.map((transaction) => (
                 <tr key={transaction.transactionId}>
                   <td>{transaction.tno}</td>
-                  <td>${transaction.amount}</td>
+                  <td>₦{transaction.amount}</td>
                   <td>{transaction.status}</td>
                   <td>{new Date(transaction.date).toLocaleDateString()}</td>
                 </tr>

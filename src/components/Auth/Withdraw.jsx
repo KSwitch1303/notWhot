@@ -1,6 +1,9 @@
 import '../Styles/Withdrawal.css'
 import { useContext, useState } from 'react';
 import { UserContext } from '../../contexts/UserContext';
+import axios from 'axios';
+
+const apiUrl = process.env.REACT_APP_API_URL
 const Withdraw = (props) => {
   const [amount, setAmount] = useState("");
   const [isPending, setIsPending] = useState(false);
@@ -8,6 +11,28 @@ const Withdraw = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsPending(true);
+    withdraw();
+  }
+  const withdraw = async () => {
+    try {
+      const response = await axios.post(`${apiUrl}/addTransaction`, {
+        sender: "Misongo Ebimietei Favour",
+        amount: amount,
+        tno: `Withdraw${Math.floor(Math.random() * 1000000000)}`,
+        receiver: props.username
+      });
+      const data = await response.data;
+      if (data.success) {
+        alert(data.message);
+        props.setPage('transactions');
+      } else {
+        alert(data.message);
+      }
+      setIsPending(false);
+    } catch (error) {
+      alert(error);
+      setIsPending(false);
+    }
   }
   return ( 
     <div className="withdrawPage">

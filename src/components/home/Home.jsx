@@ -1,5 +1,5 @@
 import '../Styles/Home.css'
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import io from "socket.io-client";
 import { GameContext } from '../../contexts/GameContext';
 import { UserContext } from '../../contexts/UserContext';
@@ -12,13 +12,25 @@ import Navbar from '../Navbar';
 import Profile from '../Auth/Profile';
 import Topup from '../Auth/Topup';
 import Withdraw from '../Auth/Withdraw';
+import axios from 'axios';
 import Transactions from './Transactions';
 const apiUrl = process.env.REACT_APP_API_URL
+
 const socket = io.connect(apiUrl);
 const Home = () => {
   const {page, setPage, room, setRoom, players, setPlayers, market, setMarket, playedCards, setPlayedCards, lobby, setLobby} = useContext(GameContext);
-  const {username, setUsername, balance, setLoggedIn} = useContext(UserContext);
+  const {username, setUsername, balance, setBalance, setLoggedIn} = useContext(UserContext);
+
+  useEffect(() => {
+    updateUser();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[page]);
   
+  const updateUser = async () => {
+    const {data} = await axios.get(`${apiUrl}/users/${username}`); 
+    // console.log(data);
+    setBalance(data.user.balance);
+  }
   return ( 
     <div className="home">
       {page !== "game" && <Navbar username={username} balance={balance} setLoggedIn={setLoggedIn} setPage={setPage}/>}

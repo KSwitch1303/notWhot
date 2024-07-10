@@ -54,7 +54,19 @@ const Game = (props) => {
     });
 
     props.socket.on("gameWon", (data) => {
-      alert(data.winner + " won the game");
+      // alert(data.winner + " won the game");
+      setWinStatus(data.players[props.username].status);
+      setWinPopup(true);
+    })
+
+    props.socket.on("disconnectPlayer", () => {
+      props.setPlayers([]);
+      props.setMarket([]);
+      props.setPlayedCards([]);
+      // props.setRoomCode('');
+      setWinPopup(false);
+      setWinStatus('');
+      props.setPage('home');
     })
 
     return () => {
@@ -97,13 +109,13 @@ const Game = (props) => {
   }
 
   const checkNeededCard = (card) => {
-    console.log(props.playedCards[props.playedCards.length - 1]);
-    console.log(card);
+    // console.log(props.playedCards[props.playedCards.length - 1]);
+    // console.log(card);
     const cardShape = card.split("-")[0];
     const cardNumber = card.split("-")[1];
     
-    console.log(cardShape);
-    console.log(cardNumber);
+    // console.log(cardShape);
+    // console.log(cardNumber);
     if (cardShape === neededCard) {
       props.socket.emit("playCard", { roomCode: props.room, username: props.username, card });
       setSpecialCardUsed('');
@@ -117,16 +129,16 @@ const Game = (props) => {
   }
 
   const checkCard = (card) => {
-    console.log(props.playedCards[props.playedCards.length - 1]);
-    console.log(card);
+    // console.log(props.playedCards[props.playedCards.length - 1]);
+    // console.log(card);
     const cardShape = card.split("-")[0];
     const cardNumber = card.split("-")[1];
     const playedCardShape = props.playedCards[props.playedCards.length - 1].split("-")[0];
     const playedCardNumber = props.playedCards[props.playedCards.length - 1].split("-")[1];
-    console.log(playedCardShape);
-    console.log(playedCardNumber);
-    console.log(cardShape);
-    console.log(cardNumber);
+    // console.log(playedCardShape);
+    // console.log(playedCardNumber);
+    // console.log(cardShape);
+    // console.log(cardNumber);
     if (cardShape === playedCardShape || cardNumber === playedCardNumber) {
       props.socket.emit("playCard", { roomCode: props.room, username: props.username, card });
       setSpecialCardUsed('');
@@ -248,7 +260,7 @@ const Game = (props) => {
       </div> 
      
       <INeed trigger={needPopup} setTrigger={setNeedPopup} need={need} setNeed={setNeed}  socket={props.socket} room={props.room} username={props.username} />
-      <Win trigger={winPopup} setTrigger={setWinPopup} usename={props.username} winStatus={winStatus} />
+      <Win socket={props.socket} trigger={winPopup} setTrigger={setWinPopup} roomCode={props.room} username={props.username} winStatus={winStatus} wager={props.players[props.username].wager} />
     </div>
   );
 };

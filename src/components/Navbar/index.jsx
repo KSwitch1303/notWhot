@@ -1,6 +1,10 @@
 import './index.css';
 import { useEffect, useState } from 'react';
+
+
 import sound from '../../Assets/Sounds/backgroundMusic.wav'; // Use import for better path resolution
+
+
 const audio = new Audio(sound);
 const Navbar = (props) => {
   const [dropdownVisible, setDropdownVisible] = useState(false);

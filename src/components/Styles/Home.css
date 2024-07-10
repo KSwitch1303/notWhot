@@ -6,7 +6,7 @@
   height: fit-content;
   background-image: url("./bg.jpeg"); /* Uncomment if you have a background image */
   background-position: center;
-  /* background-repeat: no-repeat; */
+  background-repeat: no-repeat;
   background-size: cover;
   font-family: 'Arial', sans-serif;
   color: #fff;

@@ -1,9 +1,12 @@
 import '../Styles/Game.css'
-import { useEffect } from "react";
+import { useEffect, useContext, useState } from "react";
 import Sound from '../../Assets/Sounds/playCard.wav';
 import Sound2 from '../../Assets/Sounds/useMarket.wav';
+import { GameContext } from '../../contexts/GameContext';
 let pTurn = false;
 const Game = (props) => {
+  const {page, setPage, room, setRoom, players, setPlayers, market, setMarket, playedCards, setPlayedCards, lobby, setLobby} = useContext(GameContext);
+  const [specialCardUsed , setSpecialCardUsed] = useState('');
   useEffect(() => {
     // Handle any real-time game updates here
     props.socket.on("playersUpdated", (data) => {
@@ -12,7 +15,8 @@ const Game = (props) => {
       props.setMarket(data.market);
       props.setPlayedCards(data.playedCards);
       pTurn = data.players[props.username].turn;
-      // checkPlayedcard();
+      // alert(data.playedCards.length -1)
+      checkPlayedcard(data.playedCards[data.playedCards.length - 1].split("-")[0], data.playedCards[data.playedCards.length - 1].split("-")[1], data.normalCardPlayed);
     });
 
     props.socket.on("startGame", (data) => {
@@ -64,44 +68,65 @@ const Game = (props) => {
     console.log(cardShape);
     console.log(cardNumber);
     if (cardShape === playedCardShape || cardNumber === playedCardNumber) {
-      switch (cardNumber) {
-        case "2":
-          props.socket.emit("playCard", { roomCode: props.room, username: props.username, card });
-          props.socket.emit("pickTwo", { roomCode: props.room, username: props.username, card });
-          break;
-        case "8":
-          props.socket.emit("playCard", { roomCode: props.room, username: props.username, card });
-          props.socket.emit("suspension", { roomCode: props.room, username: props.username, card });
-          break;
-        case "14":
-          props.socket.emit("playCard", { roomCode: props.room, username: props.username, card });
-          props.socket.emit("generalMarket", { roomCode: props.room, username: props.username, card });
-          break;
-        case "1":
-          props.socket.emit("playCard", { roomCode: props.room, username: props.username, card });
-          props.socket.emit("holdOn", { roomCode: props.room, username: props.username, card });
-          break;
-        default:
-          props.socket.emit("playCard", { roomCode: props.room, username: props.username, card });
-          playSound();
-          break;
-      }
+      props.socket.emit("playCard", { roomCode: props.room, username: props.username, card });
+      playSound();
+    } else if (cardNumber === "20") {
+      alert("I need")
     } else {
       alert("Invalid card played, Use the market to get a card");
     }
   }
 
-  const checkPlayedcard = () => {
+  const checkPlayedcard = async (playedCardShape, playedCardNumber, normalCardPlayed) => {
     
-    const playedCardShape = props.playedCards[props.playedCards.length - 1].split("-")[0];
-    const playedCardNumber = props.playedCards[props.playedCards.length - 1].split("-")[1];
+    // let playedCardShape = props.playedCards[props.playedCards.length - 1].split("-")[0];
+    // let playedCardNumber = props.playedCards[props.playedCards.length - 1].split("-")[1];
     if (pTurn) {
-      alert(props.playedCards[props.playedCards.length - 1]);
-      alert(playedCardNumber);
-      if (playedCardNumber === "2") {
-        
-        //  alert("Pick Two");
-      } 
+      // alert(playedCardShape);
+      // alert(playedCardNumber);
+      // alert(normalCardPlayed)
+      if (normalCardPlayed) {
+        switch (playedCardNumber) {
+          case "2":
+            await props.socket.emit("pickTwo", { roomCode: props.room, username: props.username });
+            // alert("Pick Two");
+            setSpecialCardUsed("Pick Two");
+            
+            playSound2();
+            
+            break;
+          case "8":
+            // alert("Suspension");
+            props.socket.emit("holdOn", { roomCode: props.room, username: props.username });
+            setSpecialCardUsed("Suspension");
+            break;
+          case "14":
+            // alert("General Market");
+            playSound2();
+            props.socket.emit("generalMarket", { roomCode: props.room, username: props.username });
+            setSpecialCardUsed("General Market");
+            break;
+          case "1":
+            await props.socket.emit("holdOn", { roomCode: props.room, username: props.username });
+            setSpecialCardUsed("Hold On");
+            // alert("Hold On");
+            break;
+          case "20":
+            setSpecialCardUsed("I need");
+            // alert("I need");
+            break;
+          default:
+            setSpecialCardUsed('');
+            // props.socket.emit("pickTwo", { roomCode: props.room, username: props.username });
+            break;
+        }
+      } else {
+        setSpecialCardUsed('');
+      }
+      
+      // if (playedCardNumber === "2") {
+      //    alert("Pick Two");
+      // } else
     }
   }
 
@@ -126,6 +151,7 @@ const Game = (props) => {
        
         )
       )}
+      <h2>{specialCardUsed}</h2>
      
     
       <div className="gameSpace">

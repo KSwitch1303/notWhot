@@ -7,6 +7,7 @@ let pTurn = false;
 const Game = (props) => {
   const {page, setPage, room, setRoom, players, setPlayers, market, setMarket, playedCards, setPlayedCards, lobby, setLobby} = useContext(GameContext);
   const [specialCardUsed , setSpecialCardUsed] = useState('');
+  const [oppCardNum , setOppCardNum] = useState(0);
   useEffect(() => {
     // Handle any real-time game updates here
     props.socket.on("playersUpdated", (data) => {
@@ -143,7 +144,7 @@ const Game = (props) => {
            {player.username !== props.username ? (
             <div className="Gameplayer" key={player.username}>
               <div className="otherplayers">
-                <h3>Opponent: {player.username} {player.turn && '(Turn)'}</h3>
+                <h3>Opponent: {player.username} Cards: {player.cards.length} {player.turn && '(Turn)'}</h3>
               </div>
             </div>
           ) : null}

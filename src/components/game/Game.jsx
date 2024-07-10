@@ -251,7 +251,7 @@ const Game = (props) => {
         </div>
       </div>
       
-      <div className="Gameplayer">
+      <div className="myGameplayer">
         <div className="me">
           {props.players[props.username].cards.map((card, index) => (
             <img onClick={() => playCard(card)} className='card' src={`/WhotCards/${card}.png`} alt={card} key={index} />

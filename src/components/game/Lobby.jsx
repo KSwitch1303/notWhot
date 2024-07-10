@@ -22,7 +22,7 @@ const Lobby = (props) => {
       props.setRoom(data.roomCode);
     })
     props.socket.on("userJoined", (data) => {
-      alert(data.username + " joined the room");
+      // alert(data.username + " joined the room");
     });
 
     // props.socket.on("userLeft", (data) => {

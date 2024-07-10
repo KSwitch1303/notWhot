@@ -1,5 +1,5 @@
 import '../Styles/Home.css'
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import io from "socket.io-client";
 import { GameContext } from '../../contexts/GameContext';
 import { UserContext } from '../../contexts/UserContext';
@@ -20,9 +20,14 @@ const socket = io.connect(apiUrl);
 const Home = () => {
   const {page, setPage, room, setRoom, players, setPlayers, market, setMarket, playedCards, setPlayedCards, lobby, setLobby} = useContext(GameContext);
   const {username, setUsername, balance, setBalance, setLoggedIn} = useContext(UserContext);
-
+  const [homeStyle, setHomeStyle] = useState('homeContent');
   useEffect(() => {
     updateUser();
+    if (page === "game") {
+      setHomeStyle('homeContent2');
+    } else {
+      setHomeStyle('homeContent');
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[page]);
   
@@ -35,7 +40,7 @@ const Home = () => {
     <div className="home">
       {page !== "game" && <Navbar username={username} balance={balance} setLoggedIn={setLoggedIn} setPage={setPage}/>}
       
-      <div className="homeContent">
+      <div className={homeStyle}>
         {page === "home" && <HomeContent setPage={setPage} username={username} setLobby={setLobby}/>}
         {page === "profile" && <Profile username={username} setPage={setPage}/>}
         {page === "topup" && <Topup username={username} setPage={setPage}/>}

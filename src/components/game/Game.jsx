@@ -1,13 +1,27 @@
 import '../Styles/Game.css'
-import { useEffect, useContext, useState } from "react";
+import { useEffect, useState } from "react";
 import Sound from '../../Assets/Sounds/playCard.wav';
 import Sound2 from '../../Assets/Sounds/useMarket.wav';
-import { GameContext } from '../../contexts/GameContext';
+import INeed from './Popups/INeed';
 let pTurn = false;
 const Game = (props) => {
-  const {page, setPage, room, setRoom, players, setPlayers, market, setMarket, playedCards, setPlayedCards, lobby, setLobby} = useContext(GameContext);
   const [specialCardUsed , setSpecialCardUsed] = useState('');
-  const [oppCardNum , setOppCardNum] = useState(0);
+  const [needPopup, setNeedPopup] = useState(false);
+  const [need, setNeed] = useState('');
+  const [neededCard, setNeededCard] = useState('');
+  const cardFullname = {
+    't': "TRIANGLE",
+    's': "SQUARE",
+    'x': "CROSS",
+    'c': "CIRCLE",
+    'r': "STAR"
+  }
+  useEffect(() => {
+    if (need !== '') {
+      props.socket.emit("playCard", { roomCode: props.room, username: props.username, card: 'w-20', need: need });
+      playSound();
+    }
+  },[need])
   useEffect(() => {
     // Handle any real-time game updates here
     props.socket.on("playersUpdated", (data) => {
@@ -16,6 +30,11 @@ const Game = (props) => {
       props.setMarket(data.market);
       props.setPlayedCards(data.playedCards);
       pTurn = data.players[props.username].turn;
+      if (data.cardNeeded) {
+        setNeededCard(data.need);
+      } else {
+        setNeededCard('');
+      }
       // alert(data.playedCards.length -1)
       checkPlayedcard(data.playedCards[data.playedCards.length - 1].split("-")[0], data.playedCards[data.playedCards.length - 1].split("-")[1], data.normalCardPlayed);
     });
@@ -31,17 +50,26 @@ const Game = (props) => {
       props.socket.off("playersUpdated");
       props.socket.off("startGame");
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.socket, props.setPlayers, props.setPlayedCards, props.setMarket]);
 
   const playCard = (card) => {
     if (props.players[props.username].turn) {
-      checkCard(card);
+      if (neededCard) {
+        checkNeededCard(card);
+      } else {
+        checkCard(card);
+      }
     }
   };
 
   const useMarket = () => {
     if (props.players[props.username].turn) {
-      props.socket.emit("useMarket", { roomCode: props.room, username: props.username });
+      if (neededCard) {
+        props.socket.emit("useMarket", { roomCode: props.room, username: props.username, need: neededCard });  
+      } else{
+        props.socket.emit("useMarket", { roomCode: props.room, username: props.username });
+      }
 
       playSound2();
     }
@@ -55,6 +83,24 @@ const Game = (props) => {
   const playSound2 = () => {
     const audio = new Audio(Sound2);
     audio.play();
+  }
+
+  const checkNeededCard = (card) => {
+    console.log(props.playedCards[props.playedCards.length - 1]);
+    console.log(card);
+    const cardShape = card.split("-")[0];
+    const cardNumber = card.split("-")[1];
+    
+    console.log(cardShape);
+    console.log(cardNumber);
+    if (cardShape === neededCard) {
+      props.socket.emit("playCard", { roomCode: props.room, username: props.username, card });
+      playSound();
+    } else if (cardNumber === "20") {
+      setNeedPopup(true);
+    } else {
+      alert("Invalid card played, Use the market to get a card");
+    }
   }
 
   const checkCard = (card) => {
@@ -72,7 +118,8 @@ const Game = (props) => {
       props.socket.emit("playCard", { roomCode: props.room, username: props.username, card });
       playSound();
     } else if (cardNumber === "20") {
-      alert("I need")
+      // alert("I need")
+      setNeedPopup(true);
     } else {
       alert("Invalid card played, Use the market to get a card");
     }
@@ -123,6 +170,11 @@ const Game = (props) => {
         }
       } else {
         setSpecialCardUsed('');
+        if (playedCardNumber === "20") {
+          setSpecialCardUsed('I need');
+          // alert("I need");
+        }
+        
       }
       
       // if (playedCardNumber === "2") {
@@ -144,7 +196,8 @@ const Game = (props) => {
            {player.username !== props.username ? (
             <div className="Gameplayer" key={player.username}>
               <div className="otherplayers">
-                <h3>Opponent: {player.username} Cards: {player.cards.length} {player.turn && '(Turn)'}</h3>
+                <h3>Opponent: {player.username} {player.turn && '(Turn)'}</h3>
+                <h3>Cards: {player.cards.length}</h3>
               </div>
             </div>
           ) : null}
@@ -152,7 +205,7 @@ const Game = (props) => {
        
         )
       )}
-      <h2>{specialCardUsed}</h2>
+      <h2>{specialCardUsed} {cardFullname[neededCard]}</h2>
      
     
       <div className="gameSpace">
@@ -179,7 +232,7 @@ const Game = (props) => {
         </div>
       </div> 
      
-      
+      <INeed trigger={needPopup} setTrigger={setNeedPopup} need={need} setNeed={setNeed}  socket={props.socket} room={props.room} username={props.username} />
     </div>
   );
 };

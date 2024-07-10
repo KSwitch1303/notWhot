@@ -9,6 +9,7 @@ const Game = (props) => {
   const [needPopup, setNeedPopup] = useState(false);
   const [need, setNeed] = useState('');
   const [neededCard, setNeededCard] = useState('');
+  const [needType, setNeedType] = useState('');
   const cardFullname = {
     't': "TRIANGLE",
     's': "SQUARE",
@@ -18,7 +19,9 @@ const Game = (props) => {
   }
   useEffect(() => {
     if (need !== '') {
-      props.socket.emit("playCard", { roomCode: props.room, username: props.username, card: 'w-20', need: need });
+      setSpecialCardUsed('I need');
+      props.socket.emit("playCard", { roomCode: props.room, username: props.username, card: needType, need: need });
+      setNeed('');
       playSound();
     }
   },[need])
@@ -30,6 +33,7 @@ const Game = (props) => {
       props.setMarket(data.market);
       props.setPlayedCards(data.playedCards);
       pTurn = data.players[props.username].turn;
+      playSound();
       if (data.cardNeeded) {
         setNeededCard(data.need);
       } else {
@@ -95,8 +99,10 @@ const Game = (props) => {
     console.log(cardNumber);
     if (cardShape === neededCard) {
       props.socket.emit("playCard", { roomCode: props.room, username: props.username, card });
+      setSpecialCardUsed('');
       playSound();
-    } else if (cardNumber === "20") {
+    } else if (cardShape === "w") {
+      setNeedType(cardShape + "-" + cardNumber);
       setNeedPopup(true);
     } else {
       alert("Invalid card played, Use the market to get a card");
@@ -116,9 +122,11 @@ const Game = (props) => {
     console.log(cardNumber);
     if (cardShape === playedCardShape || cardNumber === playedCardNumber) {
       props.socket.emit("playCard", { roomCode: props.room, username: props.username, card });
+      setSpecialCardUsed('');
       playSound();
-    } else if (cardNumber === "20") {
+    } else if (cardShape === "w") {
       // alert("I need")
+      setNeedType(cardShape + "-" + cardNumber);
       setNeedPopup(true);
     } else {
       alert("Invalid card played, Use the market to get a card");
@@ -170,7 +178,7 @@ const Game = (props) => {
         }
       } else {
         setSpecialCardUsed('');
-        if (playedCardNumber === "20") {
+        if (playedCardShape === "w") {
           setSpecialCardUsed('I need');
           // alert("I need");
         }

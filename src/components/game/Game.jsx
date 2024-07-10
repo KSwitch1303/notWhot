@@ -50,6 +50,10 @@ const Game = (props) => {
       props.socket.emit("updatePlayedCards", { roomCode: props.room });
     });
 
+    props.socket.on("gameWon", (data) => {
+      alert(data.winner + " won the game");
+    })
+
     return () => {
       props.socket.off("playersUpdated");
       props.socket.off("startGame");

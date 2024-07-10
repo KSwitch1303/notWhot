@@ -2,10 +2,11 @@
 .home {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
+  height: fit-content;
   background-image: url("./bg.jpeg"); /* Uncomment if you have a background image */
   background-position: center;
-  background-repeat: no-repeat;
+  /* background-repeat: no-repeat; */
   background-size: cover;
   font-family: 'Arial', sans-serif;
   color: #fff;

@@ -3,12 +3,15 @@ import { useEffect, useState } from "react";
 import Sound from '../../Assets/Sounds/playCard.wav';
 import Sound2 from '../../Assets/Sounds/useMarket.wav';
 import INeed from './Popups/INeed';
+import Win from './Popups/Win';
 let pTurn = false;
 const Game = (props) => {
   const [specialCardUsed , setSpecialCardUsed] = useState('');
   const [needPopup, setNeedPopup] = useState(false);
   const [need, setNeed] = useState('');
   const [neededCard, setNeededCard] = useState('');
+  const [winStatus, setWinStatus] = useState('');
+  const [winPopup, setWinPopup] = useState(false);
   const [needType, setNeedType] = useState('');
   const cardFullname = {
     't': "TRIANGLE",
@@ -245,6 +248,7 @@ const Game = (props) => {
       </div> 
      
       <INeed trigger={needPopup} setTrigger={setNeedPopup} need={need} setNeed={setNeed}  socket={props.socket} room={props.room} username={props.username} />
+      <Win trigger={winPopup} setTrigger={setWinPopup} usename={props.username} winStatus={winStatus} />
     </div>
   );
 };

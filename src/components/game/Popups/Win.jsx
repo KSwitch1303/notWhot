@@ -21,7 +21,8 @@ const Win = (props) => {
             room: props.roomCode,
             username: props.username,
             amount: winAmount,
-            winStatus
+            winStatus,
+            wager: props.wager
           })
         }}>Exit</button>
       </div>

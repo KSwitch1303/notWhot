@@ -1,5 +1,8 @@
 import '../Styles/Lobby.css';
 import { useEffect } from "react";
+import axios from "axios";
+
+const apiUrl = process.env.REACT_APP_API_URL
 const Lobby = (props) => {
   
   const leaveRoom = () => {
@@ -33,9 +36,11 @@ const Lobby = (props) => {
       props.setPlayers(data.players);
     });
 
-    props.socket.on("startGame", (data) => {
+    props.socket.on("startGame", async (data) => {
       props.setMarket(data.market);
       props.setPlayedCards(data.playedCards);
+      const response = await axios.post(`${apiUrl}/placeBet`, { roomCode: props.room, username: props.username, amount: props.lobby });
+      alert(response.data.message);
       props.setPage("game");
     });
 

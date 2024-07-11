@@ -16,7 +16,9 @@ const Lobby = (props) => {
   };
 
   useEffect(() => {
-    props.socket.emit("joinRoom", { lobbyName: props.lobby, username: props.username });
+    const tempUsername = localStorage.getItem("username");
+    const tempLobby = localStorage.getItem("lobby");
+    props.socket.emit("joinRoom", { lobbyName: tempLobby, username: tempUsername });
     // alert('Joined')
   }, [])
 
@@ -28,9 +30,10 @@ const Lobby = (props) => {
       // alert(data.username + " joined the room");
     });
 
-    // props.socket.on("userLeft", (data) => {
-    //   alert(data.username + " left the room");
-    // });
+    props.socket.on("userLeft", (data) => {
+      alert(data.username + " left the room");
+      props.setPage("home");
+    });
 
     props.socket.on("playersUpdated", (data) => {
       props.setPlayers(data.players);
@@ -40,7 +43,8 @@ const Lobby = (props) => {
       props.setMarket(data.market);
       props.setPlayedCards(data.playedCards);
       const response = await axios.post(`${apiUrl}/placeBet`, { roomCode: props.room, username: props.username, amount: props.lobby });
-      // alert(response.data.message);
+      alert(response.data.message);
+      props.setInGame(true);
       props.setPage("game");
     });
 

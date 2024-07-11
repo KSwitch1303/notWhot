@@ -34,7 +34,9 @@ const Login = () => {
       const data = await response.data;
       if (data.success) {
         setLoggedIn(true);
+        localStorage.setItem("loggedIn", true);
         setUser(username);
+        localStorage.setItem("username", username);
         setBank(data.user.bank);
         setAccountNO(data.user.accountNo);
         setAccountName(data.user.accountName);

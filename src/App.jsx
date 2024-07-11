@@ -20,7 +20,7 @@ function App() {
 
   const [connected, setConnected] = useState(false);
   
-  const [page, setPage] = useState("home");
+  const [page, setPage] = useState(localStorage.getItem("page") || "home");
   const [room, setRoom] = useState("");
   const [players, setPlayers] = useState({});
   
@@ -29,8 +29,10 @@ function App() {
   const [lobby, setLobby] = useState("");
 
   useEffect(() => {
-    if (!loggedIn) navigate("/");
-    if (loggedIn) navigate("/notWhot");
+    const tempLoggedIn = localStorage.getItem("loggedIn");
+    setLoggedIn(localStorage.getItem("loggedIn"));
+    if (!tempLoggedIn) navigate("/");
+    if (tempLoggedIn) navigate("/notWhot");
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedIn]);
   return (

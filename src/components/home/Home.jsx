@@ -18,23 +18,39 @@ const apiUrl = process.env.REACT_APP_API_URL
 
 const socket = io.connect(apiUrl);
 const Home = () => {
+  const [inGame, setInGame] = useState(false);
   const {page, setPage, room, setRoom, players, setPlayers, market, setMarket, playedCards, setPlayedCards, lobby, setLobby} = useContext(GameContext);
-  const {username, setUsername, balance, setBalance, setLoggedIn} = useContext(UserContext);
+  const {username, setUsername, balance, setBalance, loggedIn, setLoggedIn, setAccountName, setAccountNO, setBank} = useContext(UserContext);
   const [homeStyle, setHomeStyle] = useState('homeContent');
   useEffect(() => {
-    updateUser();
+    const tempLoggedIn = localStorage.getItem("loggedIn");
+    if (tempLoggedIn) {
+      updateUser();
+    }
     if (page === "game") {
       setHomeStyle('homeContent2');
     } else {
       setHomeStyle('homeContent');
     }
+    localStorage.setItem("page", page);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[page]);
   
   const updateUser = async () => {
-    const {data} = await axios.get(`${apiUrl}/users/${username}`); 
+    if (!username) {
+      const tempUsername = localStorage.getItem("username");
+      setUsername(localStorage.getItem("username"));
+      const {data} = await axios.get(`${apiUrl}/users/${tempUsername}`);
+      setBalance(data.user.balance);
+      setAccountName(data.user.accountName);
+      setAccountNO(data.user.accountNo);
+      setBank(data.user.bank);
+      setPage(localStorage.getItem("page"));
+    } else {
+      const {data} = await axios.get(`${apiUrl}/users/${username}`);
+      setBalance(data.user.balance);
+    }
     // console.log(data);
-    setBalance(data.user.balance);
   }
   return ( 
     <div className="home">
@@ -48,8 +64,8 @@ const Home = () => {
         {page === "transactions" && <Transactions username={username} setPage={setPage}/>}
         {page === "createRoom" && <CreateRoom setPage={setPage} socket={socket} setRoom={setRoom} setPlayers={setPlayers} players={players} username={username} setUsername={setUsername}/>}
         {page === "joinRoom" && <JoinRoom setPage={setPage} socket={socket} setRoom={setRoom} setPlayers={setPlayers} players={players} username={username} setUsername={setUsername}/>}
-        {page === "lobby" && <Lobby setPage={setPage} socket={socket} room={room} setRoom={setRoom} setPlayers={setPlayers} players={players} username={username} setMarket={setMarket} market={market} playedCards={playedCards} setPlayedCards={setPlayedCards} lobby={lobby} />}
-        {page === "game" && <Game setPage={setPage} socket={socket} room={room} setRoom={setRoom} setPlayers={setPlayers} players={players} username={username} setMarket={setMarket} market={market} playedCards={playedCards} setPlayedCards={setPlayedCards} />}
+        {page === "lobby" && <Lobby setPage={setPage} socket={socket} setInGame={setInGame} room={room} setRoom={setRoom} setPlayers={setPlayers} players={players} username={username} setMarket={setMarket} market={market} playedCards={playedCards} setPlayedCards={setPlayedCards} lobby={lobby} />}
+        {page === "game" && <Game setPage={setPage} setLobby={setLobby} inGame={inGame} setInGame={setInGame} socket={socket} room={room} setRoom={setRoom} setPlayers={setPlayers} players={players} username={username} setMarket={setMarket} market={market} playedCards={playedCards} setPlayedCards={setPlayedCards} />}
       </div>
     </div>
    );

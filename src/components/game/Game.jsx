@@ -6,6 +6,7 @@ import INeed from './Popups/INeed';
 import Win from './Popups/Win';
 let pTurn = false;
 const Game = (props) => {
+  
   const [specialCardUsed , setSpecialCardUsed] = useState('');
   const [needPopup, setNeedPopup] = useState(false);
   const [need, setNeed] = useState('');
@@ -54,7 +55,12 @@ const Game = (props) => {
       props.setPlayedCards([]);
       props.setMarket(data.market);
       props.setPlayedCards(data.playedCards);
+      console.log(data.players[props.username].turn);
       pTurn = data.players[props.username].turn;
+      if (!pTurn) {
+        pTurn = props.players[props.username].turn;
+      }
+      localStorage.setItem("pTurn", pTurn);
       playSound();
       if (data.cardNeeded) {
         setNeededCard(data.need);
@@ -69,6 +75,7 @@ const Game = (props) => {
       props.setPlayers(data.players);
       props.setMarket(data.market);
       props.setPlayedCards(data.playedCards);
+      props.setInGame(true);
       props.socket.emit("updatePlayedCards", { roomCode: props.room });
     });
 
@@ -88,12 +95,32 @@ const Game = (props) => {
       props.setPage('home');
     })
 
+    props.socket.on("reconnected", (data) => {
+      props.setPlayers(data.players);
+      props.setMarket(data.market);
+      props.setPlayedCards(data.playedCards);
+      props.setRoom(data.room);
+      props.setLobby(localStorage.getItem("lobby"));
+      pTurn = localStorage.getItem("pTurn");
+      props.socket.emit("updatePlayedCards", { roomCode: props.room });
+      props.setInGame(true);
+    })
+
     return () => {
       props.socket.off("playersUpdated");
       props.socket.off("startGame");
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.socket, props.setPlayers, props.setPlayedCards, props.setMarket]);
+
+  useEffect(() => {
+    let tempUsername = localStorage.getItem("username");
+    if (!props.inGame) {
+      props.socket.emit("reconnect", { username: tempUsername });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[props.inGame]);
+  
 
   const playCard = (card) => {
     if (props.players[props.username].turn) {
@@ -233,8 +260,9 @@ const Game = (props) => {
 
   return (
     <div className="game">
-      {/* <h1>Game Room: {props.room}</h1> */}
-      <h2>Current Turn: {currentPlayer ? currentPlayer.username : 'Waiting...'}</h2>
+      {props.inGame && (
+        <div>
+          <h2>Current Turn: {currentPlayer ? currentPlayer.username : 'Waiting...'}</h2>
       
       {/* <h2>Players</h2> */}
       {Object.values(props.players).map((player) => (
@@ -280,6 +308,10 @@ const Game = (props) => {
      
       <INeed trigger={needPopup} setTrigger={setNeedPopup} need={need} setNeed={setNeed}  socket={props.socket} room={props.room} username={props.username} />
       <Win socket={props.socket} trigger={winPopup} setTrigger={setWinPopup} roomCode={props.room} username={props.username} winStatus={winStatus} wager={props.players[props.username].wager} />
+        </div>
+      )}
+      {/* <h1>Game Room: {props.room}</h1> */}
+      
     </div>
   );
 };

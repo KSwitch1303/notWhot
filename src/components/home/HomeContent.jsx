@@ -9,6 +9,7 @@ const HomeContent = (props) => {
           return
         }
         props.setLobby("100")
+        window.localStorage.setItem("lobby", "100")
         props.setPage("lobby")
       }}>₦100</button>
       <button onClick={() => {
@@ -17,6 +18,7 @@ const HomeContent = (props) => {
           return
         }
         props.setLobby("200")
+        window.localStorage.setItem("lobby", "200")
         props.setPage("lobby")
       }}>₦200</button>
       <button onClick={() => {
@@ -25,6 +27,7 @@ const HomeContent = (props) => {
           return
         }
         props.setLobby("500")
+        window.localStorage.setItem("lobby", "500")
         props.setPage("lobby")
       }}>₦500</button>
       {/* <button onClick={() => props.setPage("createRoom")}>Create Room</button>

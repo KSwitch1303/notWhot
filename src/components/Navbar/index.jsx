@@ -67,7 +67,11 @@ const Navbar = (props) => {
         <h1 className="withdraw" onClick={() => { props.setPage("withdraw"); toggleDropdown(); }}><i className="fa-solid fa-hand-holding-dollar"></i> Withdraw</h1>
         <h1 className='transactions' onClick={() => { props.setPage("transactions"); toggleDropdown(); }}><i className="fa-solid fa-receipt"></i> Transactions</h1>
         <h1 className="mute" onClick={() => { setIsMuted(!isMuted); toggleDropdown(); }}>{isMuted ? <i className="fa-solid fa-volume-xmark"></i>  : <i className="fa-solid fa-volume-high"></i>}{isMuted ? " Unmute" : " Mute"}</h1>
-        <h1 className="logout" onClick={() => { props.setLoggedIn(false); toggleDropdown(); }}><i className="fa-solid fa-right-from-bracket"></i> Logout</h1>
+        <h1 className="logout" onClick={() => { 
+          localStorage.clear();
+          window.location.reload();
+          toggleDropdown(); 
+        }}><i className="fa-solid fa-right-from-bracket"></i> Logout</h1>
       </div>
     </div>
   );

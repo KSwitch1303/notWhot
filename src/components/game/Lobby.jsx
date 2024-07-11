@@ -1,10 +1,10 @@
 import '../Styles/Lobby.css';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 const apiUrl = process.env.REACT_APP_API_URL
 const Lobby = (props) => {
-  
+  const [isPending, setIsPending] = useState(false);
   const leaveRoom = () => {
     props.socket.emit("leaveRoom", { roomCode: props.room, username: props.username });
     props.setPage("home");
@@ -12,6 +12,7 @@ const Lobby = (props) => {
   };
 
   const ready = () => {
+    setIsPending(true);
     props.socket.emit("ready", { roomCode: props.room, username: props.username });
   };
 
@@ -20,6 +21,7 @@ const Lobby = (props) => {
     const tempLobby = localStorage.getItem("lobby");
     props.socket.emit("joinRoom", { lobbyName: tempLobby, username: tempUsername });
     // alert('Joined')
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -44,7 +46,7 @@ const Lobby = (props) => {
       props.setMarket(data.market);
       props.setPlayedCards(data.playedCards);
       const response = await axios.post(`${apiUrl}/placeBet`, { roomCode: props.room, username: props.username, amount: props.lobby });
-      alert(response.data.message);
+      // alert(response.data.message);
       
       props.setInGame(true);
       props.setPage("game");
@@ -66,7 +68,7 @@ const Lobby = (props) => {
   return (
     <div className="lobby">
       {/* <h1>Lobby {props.room}</h1> */}
-      <button className='leaveBtn' onClick={leaveRoom}>Leave Room</button>
+      <button disabled={isPending} className='leaveBtn' onClick={leaveRoom}>Leave Room</button>
       <div className="playerCard">
         {Object.values(props.players).map((player) => (
           <div className="player" key={player.username}>
@@ -77,7 +79,7 @@ const Lobby = (props) => {
         ))}
       </div>
       
-      <button className='readyBtn' onClick={ready}>Ready</button>
+      <button disabled={isPending} className='readyBtn' onClick={ready}>Ready</button>
     </div>
   );
 };

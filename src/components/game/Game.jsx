@@ -1,5 +1,5 @@
 import '../Styles/Game.css'
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Sound from '../../Assets/Sounds/playCard.wav';
 import Sound2 from '../../Assets/Sounds/useMarket.wav';
 import INeed from './Popups/INeed';
@@ -15,6 +15,7 @@ const Game = (props) => {
   const [winPopup, setWinPopup] = useState(false);
   const [needType, setNeedType] = useState('');
   const [timer, setTimer] = useState(120);
+  let timeHandler = useRef();
   const cardFullname = {
     't': "TRIANGLE",
     's': "SQUARE",
@@ -25,40 +26,73 @@ const Game = (props) => {
   useEffect(() => {
     if (need !== '') {
       setSpecialCardUsed('I need');
-      props.socket.emit("playCard", { roomCode: props.room, username: props.username, card: needType, need: need });
+      props.socket.emit("playCard", { roomCode: localStorage.getItem("room"), username: props.username, card: needType, need: need });
       setNeed('');
       playSound();
     }
   },[need])
-  const timerTick = () => setInterval(() => {
-    if (timer > 0) {
-      props.socket.emit("updateTimer", { roomCode: props.room, username: props.username });
-    } else {
-      if (pTurn === true) {
-        winStatus = 'loss';
-      } else {
-        winStatus = 'win';
-      }
-      props.socket.emit('endGame', {
-        room: props.roomCode,
-        username: props.username,
-        amount: props.lobby * (props.lobby * 0.2),
-        winStatus,
-        wager: props.wager
-      })
+  const timerTick = () => {
+    timeHandler.current = setInterval(() => {
+      
+      
+
+        // props.socket.emit("updateTimer", { roomCode: localStorage.getItem("room"), username: localStorage.getItem("username") });
+        if (!winStatus) {
+          if (neededCard) {
+            console.log('need', neededCard);
+            props.socket.emit("updateTimer", { roomCode: localStorage.getItem("room"), username: localStorage.getItem("username"), need: neededCard });
+          }
+          else {
+            props.socket.emit("updateTimer", { roomCode: localStorage.getItem("room"), username: localStorage.getItem("username") });
+          }
+        }      
+        
+    }, 1000)
+  };
+  useEffect(() => {
+    
+      timerTick();
+    
+
+    return () => {
+      clearInterval(timeHandler.current);
+      props.socket.off("updateTimer");
     }
-  }, 1000);
+  },[])
   useEffect(() => {
     // Handle any real-time game updates here
+    props.socket.on("playersRejoined", (data) => {
+      props.setPlayers(data.players);
+      props.setPlayedCards([]);
+      props.setMarket(data.market);
+      props.setPlayedCards(data.playedCards);
+      // console.log(data.players[props.username].turn);
+      let tempUsername = localStorage.getItem("username");
+      console.log('data',data.players);
+      // alert(data.players[tempUsername].turn);
+      // pTurn = data.players[tempUsername].turn;
+      // console.logs(pTurn);
+      // localStorage.setItem("pTurn", pTurn);
+      playSound();
+      if (data.cardNeeded) {
+        setNeededCard(data.need);
+      } else {
+        setNeededCard('');
+      }
+      // alert(data.playedCards.length -1)
+      checkPlayedcard(data.playedCards[data.playedCards.length - 1].split("-")[0], data.playedCards[data.playedCards.length - 1].split("-")[1], data.normalCardPlayed);
+    })
     props.socket.on("playersUpdated", (data) => {
       props.setPlayers(data.players);
       props.setPlayedCards([]);
       props.setMarket(data.market);
       props.setPlayedCards(data.playedCards);
       // console.log(data.players[props.username].turn);
-      const tempUsername = localStorage.getItem("username");
+      let tempUsername = localStorage.getItem("username");
+      console.log('data',data.players);
+      // alert(data.players[tempUsername].turn);
       pTurn = data.players[tempUsername].turn;
-      console.log(pTurn);
+      // console.logs(pTurn);
       localStorage.setItem("pTurn", pTurn);
       playSound();
       if (data.cardNeeded) {
@@ -79,7 +113,6 @@ const Game = (props) => {
     });
 
     props.socket.on("gameWon", (data) => {
-      alert(data.winner + " won the game");
       setWinStatus(data.players[localStorage.getItem("username")].status);
       setWinPopup(true);
     })
@@ -96,16 +129,21 @@ const Game = (props) => {
 
     props.socket.on("reconnected", (data) => {
       alert('reconnecting');
+      props.setInGame(true);
       props.setPlayers(data.players);
       props.setMarket(data.market);
+      alert(data.market);
       props.setPlayedCards(data.playedCards);
       props.setRoom(data.room);
       props.setLobby(localStorage.getItem("lobby"));
       pTurn = localStorage.getItem("pTurn");
-      props.socket.emit("updatePlayedCards", { roomCode: props.room });
-      props.setInGame(true);
+      props.socket.emit("updatePlayedCards", { roomCode: localStorage.getItem("room") });
+      
     })
-
+    const handleTimerTicked = (data) => {
+      setTimer(data.timer);
+    };
+    props.socket.on("timerTicked", handleTimerTicked);
     return () => {
       props.socket.off("playersUpdated");
       props.socket.off("startGame");
@@ -135,9 +173,9 @@ const Game = (props) => {
   const useMarket = () => {
     if (props.players[props.username].turn) {
       if (neededCard) {
-        props.socket.emit("useMarket", { roomCode: props.room, username: props.username, need: neededCard });  
+        props.socket.emit("useMarket", { roomCode: localStorage.getItem("room"), username: props.username, need: neededCard });  
       } else{
-        props.socket.emit("useMarket", { roomCode: props.room, username: props.username });
+        props.socket.emit("useMarket", { roomCode: localStorage.getItem("room"), username: props.username });
       }
 
       playSound2();
@@ -282,6 +320,7 @@ const Game = (props) => {
         )
       )}
       <h2>{specialCardUsed} {cardFullname[neededCard]}</h2>
+      <h2>TIme: {timer}</h2>
      
     
       <div className="gameSpace">
@@ -291,11 +330,6 @@ const Game = (props) => {
         </div>
         
         <div className="playedCards" style={{ display: 'flex', flexWrap: 'wrap' }}>
-          {/* {props.playedCards.map((card, index) => (
-            <div key={index}>
-              <img className='card' src={`/WhotCards/${card}.png`} alt={card} />
-            </div>
-          ))} */}
           <img className='card' src={`/WhotCards/${props.playedCards[props.playedCards.length - 1]}.png`} alt={props.playedCards[props.playedCards.length - 1]} />
         </div>
       </div>

@@ -55,11 +55,10 @@ const Game = (props) => {
       props.setPlayedCards([]);
       props.setMarket(data.market);
       props.setPlayedCards(data.playedCards);
-      console.log(data.players[props.username].turn);
-      pTurn = data.players[props.username].turn;
-      if (!pTurn) {
-        pTurn = props.players[props.username].turn;
-      }
+      // console.log(data.players[props.username].turn);
+      const tempUsername = localStorage.getItem("username");
+      pTurn = data.players[tempUsername].turn;
+      console.log(pTurn);
       localStorage.setItem("pTurn", pTurn);
       playSound();
       if (data.cardNeeded) {
@@ -80,8 +79,8 @@ const Game = (props) => {
     });
 
     props.socket.on("gameWon", (data) => {
-      // alert(data.winner + " won the game");
-      setWinStatus(data.players[props.username].status);
+      alert(data.winner + " won the game");
+      setWinStatus(data.players[localStorage.getItem("username")].status);
       setWinPopup(true);
     })
 
@@ -96,6 +95,7 @@ const Game = (props) => {
     })
 
     props.socket.on("reconnected", (data) => {
+      alert('reconnecting');
       props.setPlayers(data.players);
       props.setMarket(data.market);
       props.setPlayedCards(data.playedCards);
@@ -163,7 +163,7 @@ const Game = (props) => {
     // console.log(cardShape);
     // console.log(cardNumber);
     if (cardShape === neededCard) {
-      props.socket.emit("playCard", { roomCode: props.room, username: props.username, card });
+      props.socket.emit("playCard", { roomCode: localStorage.getItem("room"), username: localStorage.getItem("username"), card });
       setSpecialCardUsed('');
       playSound();
     } else if (cardShape === "w") {
@@ -186,7 +186,7 @@ const Game = (props) => {
     // console.log(cardShape);
     // console.log(cardNumber);
     if (cardShape === playedCardShape || cardNumber === playedCardNumber) {
-      props.socket.emit("playCard", { roomCode: props.room, username: props.username, card });
+      props.socket.emit("playCard", { roomCode: localStorage.getItem("room"), username: localStorage.getItem("username"), card });
       setSpecialCardUsed('');
       playSound();
     } else if (cardShape === "w") {
@@ -207,9 +207,11 @@ const Game = (props) => {
       // alert(playedCardNumber);
       // alert(normalCardPlayed)
       if (normalCardPlayed) {
+        const roomCode = localStorage.getItem("room");
+        const username = localStorage.getItem("username");
         switch (playedCardNumber) {
           case "2":
-            await props.socket.emit("pickTwo", { roomCode: props.room, username: props.username });
+            await props.socket.emit("pickTwo", { roomCode, username });
             // alert("Pick Two");
             setSpecialCardUsed("Pick Two");
             
@@ -218,17 +220,17 @@ const Game = (props) => {
             break;
           case "8":
             // alert("Suspension");
-            props.socket.emit("holdOn", { roomCode: props.room, username: props.username });
+            props.socket.emit("holdOn", { roomCode, username });
             setSpecialCardUsed("Suspension");
             break;
           case "14":
             // alert("General Market");
             playSound2();
-            props.socket.emit("generalMarket", { roomCode: props.room, username: props.username });
+            props.socket.emit("generalMarket", { roomCode, username });
             setSpecialCardUsed("General Market");
             break;
           case "1":
-            await props.socket.emit("holdOn", { roomCode: props.room, username: props.username });
+            await props.socket.emit("holdOn", { roomCode , username });
             setSpecialCardUsed("Hold On");
             // alert("Hold On");
             break;

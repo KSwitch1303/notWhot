@@ -17,6 +17,7 @@ const Win = (props) => {
             winAmount = props.wager
           }
           console.log(winStatus, winAmount);
+          localStorage.setItem('room', '');
           props.socket.emit('endGame', {
             room: props.roomCode,
             username: props.username,

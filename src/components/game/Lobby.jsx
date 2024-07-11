@@ -25,6 +25,7 @@ const Lobby = (props) => {
   useEffect(() => {
     props.socket.on("roomCode", (data) => {
       props.setRoom(data.roomCode);
+      localStorage.setItem("room", data.roomCode);
     })
     props.socket.on("userJoined", (data) => {
       // alert(data.username + " joined the room");
@@ -44,6 +45,7 @@ const Lobby = (props) => {
       props.setPlayedCards(data.playedCards);
       const response = await axios.post(`${apiUrl}/placeBet`, { roomCode: props.room, username: props.username, amount: props.lobby });
       alert(response.data.message);
+      
       props.setInGame(true);
       props.setPage("game");
     });

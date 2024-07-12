@@ -41,12 +41,14 @@ const Transactions = (props) => {
 
   return (
     <div className="transactionsPage">
+      <div className="transactionContent">
       {histPage === "home" && <Home setHistPage={setHistPage} />}
       {histPage === "topup" && <Topup username={props.username} setHistPage={setHistPage} />}
       {histPage === "withdraw" && <Withdraw username={props.username} setHistPage={setHistPage} />}
       {histPage === "game" && <Game username={props.username} setHistPage={setHistPage} />}
       {histPage === "win" && <Win username={props.username} setHistPage={setHistPage} />}
       {histPage === "loss" && <Loss username={props.username} setHistPage={setHistPage} />}
+      </div>
       <button onClick={() => setHistPage("home")}>Home</button>
     </div>
     // <div className="transactionsPage">

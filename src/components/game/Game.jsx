@@ -141,7 +141,7 @@ const Game = (props) => {
     })
 
     props.socket.on("reconnected", (data) => {
-      
+      alert('reconnected');
       props.setInGame(true);
       props.setPlayers(data.players);
       props.setMarket(data.market);

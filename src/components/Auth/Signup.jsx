@@ -37,11 +37,11 @@ const Signup = () => {
   const sendRequest = async () => {
     const res = await axios
       .post(`${apiUrl}/signup`, {
-        username: fusername,
+        username: fusername.trim(),
         password,
-        bank: fbank,
-        accountNo: faccountNO,
-        accountName: faccountName
+        bank: fbank.trim(),
+        accountNo: faccountNO.trim(),
+        accountName: faccountName.trim(),
       })
       .catch((err) => console.log(err));
     const data = await res.data;

@@ -45,7 +45,7 @@ const Topup = (props) => {
     <div className="topupPage">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></link>
       <h1>Top up</h1>
-      <p>Make Payment to the account below, your in game account will be credited within an hour</p>
+      <p>Make Payment to the account below <br/> Payment confirmation time is between 8am-10am, 12pm-1pm and 8pm-10pm </p>
       <h3>Account Name: Misongo Ebimietei Favour</h3>
       <h3>Account Number: 8138267700 <span><i className="fa-solid fa-copy" onClick={
         () => {

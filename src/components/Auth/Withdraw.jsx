@@ -47,7 +47,7 @@ const Withdraw = (props) => {
     <div className="withdrawPage">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></link>
       <h1>Withdraw</h1>
-      <p>Confirm account details and enter withdrawal amount (If details are incorrect, please go to the profile page)</p>
+      <p>Confirm account details and enter withdrawal amount <br/> (If details are incorrect, please go to the profile page) <br/> Withdrawal confirmation time is between 8am-10am, 12pm-1pm and 8pm-10pm <br /> Minimum amount is N100</p>
       <h3>Account Name: {accountName}</h3>
       <h3>Account Number: {accountNO}</h3> 
       <h3>Bank: {bank}</h3>

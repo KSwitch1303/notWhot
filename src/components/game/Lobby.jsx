@@ -25,10 +25,16 @@ const Lobby = (props) => {
   }, [])
 
   useEffect(() => {
+    props.socket.on("notAllPlayersReady", (data) => {
+      // alert("Not all players are ready");
+      setIsPending(false);
+    })
+
     props.socket.on("roomCode", (data) => {
       props.setRoom(data.roomCode);
       localStorage.setItem("room", data.roomCode);
     })
+
     props.socket.on("userJoined", (data) => {
       // alert(data.username + " joined the room");
     });

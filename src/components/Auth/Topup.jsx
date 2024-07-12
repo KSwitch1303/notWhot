@@ -34,7 +34,7 @@ const Topup = (props) => {
       } else {
         alert(data.message);
       }
-      setIsPending(false);
+      // setIsPending(false);
     } catch (error) {
       alert(error);
       setIsPending(false);

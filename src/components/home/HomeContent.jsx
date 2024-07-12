@@ -1,4 +1,11 @@
+import { useEffect } from "react";
 const HomeContent = (props) => {
+  useEffect(() => {
+    localStorage.setItem('room', '')
+    localStorage.setItem('userID', '')
+    localStorage.setItem('pTurn', '')
+    localStorage.setItem('lobby', '')
+  },[])
   return ( 
     <div className="landing">
       <h1>Welcome {props.username}</h1>

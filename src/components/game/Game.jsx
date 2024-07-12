@@ -4,16 +4,23 @@ import Sound from '../../Assets/Sounds/playCard.wav';
 import Sound2 from '../../Assets/Sounds/useMarket.wav';
 import INeed from './Popups/INeed';
 import Win from './Popups/Win';
+import Waiting from './Popups/Waiting';
+
+
+
 let pTurn = false;
 const Game = (props) => {
-  
+  const userID  = localStorage.getItem("userID") || props.socket.id;
   const [specialCardUsed , setSpecialCardUsed] = useState('');
   const [needPopup, setNeedPopup] = useState(false);
   const [need, setNeed] = useState('');
-  const [neededCard, setNeededCard] = useState('');
+  const [neededCard, setNeededCard] = useState(localStorage.getItem("neededCard") || '');
   const [winStatus, setWinStatus] = useState('');
   const [winPopup, setWinPopup] = useState(false);
+  const [waitingPopup, setWaitingPopup] = useState(false);
+  const [opponent, setOpponent] = useState('');
   const [needType, setNeedType] = useState('');
+
   const [timer, setTimer] = useState(120);
   let timeHandler = useRef();
   const cardFullname = {
@@ -23,6 +30,9 @@ const Game = (props) => {
     'c': "CIRCLE",
     'r': "STAR"
   }
+  useEffect(() => {
+    localStorage.setItem("userID", userID);
+  }, [userID]);
   useEffect(() => {
     if (need !== '') {
       setSpecialCardUsed('I need');
@@ -43,6 +53,7 @@ const Game = (props) => {
             props.socket.emit("updateTimer", { roomCode: localStorage.getItem("room"), username: localStorage.getItem("username"), need: neededCard });
           }
           else {
+            console.log('no need');
             props.socket.emit("updateTimer", { roomCode: localStorage.getItem("room"), username: localStorage.getItem("username") });
           }
         }      
@@ -50,8 +61,10 @@ const Game = (props) => {
     }, 1000)
   };
   useEffect(() => {
-    
+    if (!waitingPopup) {
       timerTick();
+    }
+      
     
 
     return () => {
@@ -61,11 +74,23 @@ const Game = (props) => {
   },[])
   useEffect(() => {
     // Handle any real-time game updates here
+    props.socket.on("waitingOnUser", (data) => {
+      if (winPopup) {
+        return
+      }
+      setOpponent(data.usersname);
+      // localStorage.setItem("opponentID", opponentID);
+      setWaitingPopup(true);
+    })
+
     props.socket.on("playersRejoined", (data) => {
+      setWaitingPopup(false);
       props.setPlayers(data.players);
       props.setPlayedCards([]);
       props.setMarket(data.market);
       props.setPlayedCards(data.playedCards);
+      setNeededCard(localStorage.getItem("neededCard"));
+      localStorage.setItem("userID", data.userID);
       // console.log(data.players[props.username].turn);
       let tempUsername = localStorage.getItem("username");
       console.log('data',data.players);
@@ -75,12 +100,12 @@ const Game = (props) => {
       // localStorage.setItem("pTurn", pTurn);
       playSound();
       if (data.cardNeeded) {
-        setNeededCard(data.need);
+        // setNeededCard(data.need);
       } else {
-        setNeededCard('');
+        // setNeededCard('');
       }
       // alert(data.playedCards.length -1)
-      checkPlayedcard(data.playedCards[data.playedCards.length - 1].split("-")[0], data.playedCards[data.playedCards.length - 1].split("-")[1], data.normalCardPlayed);
+      // checkPlayedcard(data.playedCards[data.playedCards.length - 1].split("-")[0], data.playedCards[data.playedCards.length - 1].split("-")[1], data.normalCardPlayed);
     })
     props.socket.on("playersUpdated", (data) => {
       props.setPlayers(data.players);
@@ -97,8 +122,10 @@ const Game = (props) => {
       playSound();
       if (data.cardNeeded) {
         setNeededCard(data.need);
+        localStorage.setItem("neededCard", data.need);
       } else {
         setNeededCard('');
+        localStorage.setItem("neededCard", '');
       }
       // alert(data.playedCards.length -1)
       checkPlayedcard(data.playedCards[data.playedCards.length - 1].split("-")[0], data.playedCards[data.playedCards.length - 1].split("-")[1], data.normalCardPlayed);
@@ -141,7 +168,8 @@ const Game = (props) => {
     })
 
     props.socket.on("reconnected", (data) => {
-      alert('reconnected');
+      // alert('reconnected');
+      setWaitingPopup(false);
       props.setInGame(true);
       props.setPlayers(data.players);
       props.setMarket(data.market);
@@ -150,7 +178,7 @@ const Game = (props) => {
       props.setRoom(data.room);
       props.setLobby(localStorage.getItem("lobby"));
       pTurn = localStorage.getItem("pTurn");
-      props.socket.emit("updatePlayedCards", { roomCode: localStorage.getItem("room") });
+      props.socket.emit("updatePlayedCards", { roomCode: localStorage.getItem("room"), userID: localStorage.getItem("userID") });
       
     })
     const handleTimerTicked = (data) => {
@@ -357,6 +385,7 @@ const Game = (props) => {
      
       <INeed trigger={needPopup} setTrigger={setNeedPopup} need={need} setNeed={setNeed}  socket={props.socket} room={props.room} username={props.username} />
       <Win socket={props.socket} trigger={winPopup} setTrigger={setWinPopup} roomCode={props.room} username={props.username} winStatus={winStatus} wager={props.players[props.username].wager} />
+      <Waiting socket={props.socket} trigger={waitingPopup} setTrigger={setWaitingPopup} opponent={opponent} />
         </div>
       )}
       {/* <h1>Game Room: {props.room}</h1> */}

@@ -6,7 +6,7 @@ const apiUrl = process.env.REACT_APP_API_URL
 const Lobby = (props) => {
   const [isPending, setIsPending] = useState(false);
   const leaveRoom = () => {
-    props.socket.emit("leaveRoom", { roomCode: props.room, username: props.username });
+    props.socket.emit("leaveRoom", { roomCode: props.room, username: props.username, lobbyName: localStorage.getItem('lobby') });
     props.setPage("home");
     // window.location.reload();
   };
@@ -51,7 +51,7 @@ const Lobby = (props) => {
     props.socket.on("startGame", async (data) => {
       props.setMarket(data.market);
       props.setPlayedCards(data.playedCards);
-      const response = await axios.post(`${apiUrl}/placeBet`, { roomCode: props.room, username: props.username, amount: props.lobby });
+      const response = await axios.post(`${apiUrl}/placeBet`, { roomCode: localStorage.getItem("room"), username: localStorage.getItem("username"), amount: localStorage.getItem("lobby") });
       
       // alert(response.data.message);
       

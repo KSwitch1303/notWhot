@@ -27,7 +27,7 @@ const Withdraw = (props) => {
     try {
       const response = await axios.post(`${apiUrl}/addWithdrawal`, {
         amount: amount,
-        party2: props.username
+        party2: accountNO
       });
       const data = await response.data;
       if (data.success) {

@@ -42,12 +42,12 @@ const Withdrawals = (props) => {
               <td>{transaction.amount}</td>
               <td>{transaction.status}</td>
               <td>
-                <button onClick={() => {
-                  axios.post(`${apiUrl}/updateTransaction`, { transactionId: transaction._id, status: "Approved" });
+                <button onClick={async () => {
+                  await axios.post(`${apiUrl}/updateTransaction`, { transactionId: transaction._id, status: "Approved" });
                   getWithdrawals();
                 }}>Approve</button>
-                <button onClick={() => {
-                  axios.post(`${apiUrl}/updateTransaction`, { transactionId: transaction._id, status: "Failed" });
+                <button onClick={async () => {
+                  await axios.post(`${apiUrl}/updateTransaction`, { transactionId: transaction._id, status: "Failed" });
                   getWithdrawals();
                 }}>Failed</button>
               </td>

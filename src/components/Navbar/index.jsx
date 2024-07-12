@@ -49,6 +49,7 @@ const Navbar = (props) => {
       </div>
 
       <div className="navLeft">
+        <h1 className="homebtn" onClick={() => { props.setPage("home") }} title="Home"><i className="fa-solid fa-house"></i></h1>
         <h1 className="profile" onClick={() => props.setPage("profile")} title="Profile"><i className="fa-solid fa-user"></i></h1>
         <h1 className="topup" onClick={() => props.setPage("topup")} title="Top-up"><i className="fa-solid fa-wallet"></i></h1>
         <h1 className="withdraw" onClick={() => props.setPage("withdraw")} title="Withdraw"><i className="fa-solid fa-hand-holding-dollar"></i></h1>
@@ -57,19 +58,19 @@ const Navbar = (props) => {
         <h1 className="logout" onClick={() => {
           localStorage.clear();
           window.location.reload();
-          toggleDropdown(); 
         }} title="Logout"><i className="fa-solid fa-right-from-bracket"></i></h1>
       </div>
 
-      <div className="menu-icon" onClick={toggleDropdown}>
-        <i className="fa-solid fa-bars"></i>
+      <div className="menu-icon" onClick={toggleDropdown} >
+        <i  className="fa-solid fa-bars"></i>
       </div>
 
       <div className={`dropdown-content ${dropdownVisible ? 'show' : ''}`}>
+        <h1 className="homebtn" onClick={() => { props.setPage("home"); toggleDropdown(); }}><i className="fa-solid fa-house"></i> Home</h1>
         <h1 className="profile" onClick={() => { props.setPage("profile"); toggleDropdown(); }}><i className="fa-solid fa-user"></i> Profile</h1>
         <h1 className="topup" onClick={() => { props.setPage("topup"); toggleDropdown(); }}><i className="fa-solid fa-wallet"></i> Top-up</h1>
         <h1 className="withdraw" onClick={() => { props.setPage("withdraw"); toggleDropdown(); }}><i className="fa-solid fa-hand-holding-dollar"></i> Withdraw</h1>
-        <h1 className='transactions' onClick={() => { props.setPage("transactions"); toggleDropdown(); }}><i className="fa-solid fa-receipt"></i> Transactions</h1>
+        <h1 className='transactions' onClick={() => { props.setPage("transactions"); toggleDropdown(); }}><i className="fa-solid fa-receipt"></i> History</h1>
         <h1 className="mute" onClick={() => { setIsMuted(!isMuted); toggleDropdown(); }}>{isMuted ? <i className="fa-solid fa-volume-xmark"></i>  : <i className="fa-solid fa-volume-high"></i>}{isMuted ? " Unmute" : " Mute"}</h1>
         <h1 className="logout" onClick={() => { 
           localStorage.clear();

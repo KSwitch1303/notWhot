@@ -20,6 +20,7 @@ const Payments = (props) => {
       console.error(error);
     }
   }
+
   return ( 
     <div className="payments">
       <h1>Payments</h1>
@@ -42,12 +43,18 @@ const Payments = (props) => {
               <td>{transaction.amount}</td>
               <td>{transaction.status}</td>
               <td>
-                <button onClick={() => {
-                  axios.post(`${apiUrl}/updateTransaction`, { transactionId: transaction._id, status: "Approved" });
+                <button onClick={async () => {
+                  if (transaction.status === "Approved") return;
+                  await axios.post(`${apiUrl}/updateBalance`, { transactionId: transaction._id, status: "Approved", amount: transaction.amount });
                   getPayments();
                 }}>Approve</button>
-                <button onClick={() => {
-                  axios.post(`${apiUrl}/updateTransaction`, { transactionId: transaction._id, status: "Failed" });
+                <button onClick={async () => {
+                  if (transaction.status === "Approved") {
+                    await axios.post(`${apiUrl}/reduceBalance`, { transactionId: transaction._id, status: "Failed", amount: transaction.amount });
+                    getPayments();
+                    return;
+                  }                  
+                  await axios.post(`${apiUrl}/updateBalance`, { transactionId: transaction._id, status: "Failed" });
                   getPayments();
                 }}>Failed</button>
               </td>

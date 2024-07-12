@@ -13,7 +13,7 @@ import Profile from '../Auth/Profile';
 import Topup from '../Auth/Topup';
 import Withdraw from '../Auth/Withdraw';
 import axios from 'axios';
-import Transactions from './Transactions';
+import History from '../home/History';
 const apiUrl = process.env.REACT_APP_API_URL
 
 const socket = io.connect(apiUrl);
@@ -61,7 +61,7 @@ const Home = () => {
         {page === "profile" && <Profile username={username} setPage={setPage}/>}
         {page === "topup" && <Topup username={username} accountName={accountName} setPage={setPage}/>}
         {page === "withdraw" && <Withdraw username={username} setPage={setPage}/>}
-        {page === "transactions" && <Transactions username={username} setPage={setPage}/>}
+        {page === "transactions" && <History username={username} setPage={setPage}/>}
         {page === "createRoom" && <CreateRoom setPage={setPage} socket={socket} setRoom={setRoom} setPlayers={setPlayers} players={players} username={username} setUsername={setUsername}/>}
         {page === "joinRoom" && <JoinRoom setPage={setPage} socket={socket} setRoom={setRoom} setPlayers={setPlayers} players={players} username={username} setUsername={setUsername}/>}
         {page === "lobby" && <Lobby setPage={setPage} socket={socket} setInGame={setInGame} room={room} setRoom={setRoom} setPlayers={setPlayers} players={players} username={username} setMarket={setMarket} market={market} playedCards={playedCards} setPlayedCards={setPlayedCards} lobby={lobby} />}

@@ -50,6 +50,28 @@ table th {
   margin-top: 20px;
 }
 
+.transactionsPage button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0.5rem;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.transactionsPage button:hover {
+  background-color: #218838;
+  transform: scale(1.05);
+}
+
+.transactionsPage button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.5);
+}
+
 @media screen and (max-width: 600px) {
   table {
     width: 100%;

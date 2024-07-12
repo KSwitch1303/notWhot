@@ -117,6 +117,19 @@ const Game = (props) => {
       setWinPopup(true);
     })
 
+    props.socket.on("leaveGame", (data) => {
+      props.setPlayers([]);
+      props.setMarket([]);
+      props.setPlayedCards([]);
+      // props.setRoomCode('');
+      setWinPopup(false);
+      setWinStatus('');
+      localStorage.setItem('lobby', '');
+      localStorage.setItem('room', '');
+      localStorage.setItem('page', 'home');
+      window.location.reload();
+    })
+
     props.socket.on("disconnectPlayer", () => {
       props.setPlayers([]);
       props.setMarket([]);
@@ -128,11 +141,11 @@ const Game = (props) => {
     })
 
     props.socket.on("reconnected", (data) => {
-      alert('reconnecting');
+      
       props.setInGame(true);
       props.setPlayers(data.players);
       props.setMarket(data.market);
-      alert(data.market);
+      // alert(data.market);
       props.setPlayedCards(data.playedCards);
       props.setRoom(data.room);
       props.setLobby(localStorage.getItem("lobby"));

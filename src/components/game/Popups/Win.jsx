@@ -1,4 +1,7 @@
 import './Win.css'
+import axios from 'axios';
+
+const apiUrl = process.env.REACT_APP_API_URL
 const Win = (props) => {
   return (props.trigger) ? ( 
     <div className="winPopup">
@@ -13,6 +16,7 @@ const Win = (props) => {
           let winAmount
           if (winStatus === 'win') {
             winAmount = props.wager - (props.wager * 0.2)
+            
           } else {
             winAmount = props.wager
           }
@@ -20,6 +24,7 @@ const Win = (props) => {
           
           localStorage.setItem('lobby', '');
           localStorage.setItem('room', '');
+          
           props.socket.emit('endGame', {
             room: props.roomCode,
             username: props.username,

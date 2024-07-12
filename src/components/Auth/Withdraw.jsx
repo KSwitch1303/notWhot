@@ -7,23 +7,32 @@ const apiUrl = process.env.REACT_APP_API_URL
 const Withdraw = (props) => {
   const [amount, setAmount] = useState("");
   const [isPending, setIsPending] = useState(false);
-  const {bank, accountNO, accountName} = useContext(UserContext);
+  const {bank, accountNO, accountName, balance, setBalance} = useContext(UserContext);
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsPending(true);
-    withdraw();
+    if (amount < 100) {
+      alert("Amount must be greater than N100");
+      setIsPending(false);
+    } else {
+      if (amount > balance) {
+        alert("Insufficient funds");
+        setIsPending(false);
+      } else {
+        withdraw(); 
+      }
+    }
   }
   const withdraw = async () => {
     try {
-      const response = await axios.post(`${apiUrl}/addTransaction`, {
-        sender: "Misongo Ebimietei Favour",
+      const response = await axios.post(`${apiUrl}/addWithdrawal`, {
         amount: amount,
-        tno: `Withdraw${Math.floor(Math.random() * 1000000000)}`,
-        receiver: props.username
+        party2: props.username
       });
       const data = await response.data;
       if (data.success) {
         alert(data.message);
+        // setBalance(balance - amount);
         props.setPage('transactions');
       } else {
         alert(data.message);

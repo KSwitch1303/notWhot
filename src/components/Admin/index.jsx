@@ -1,37 +1,52 @@
 import './index.css';
 import { useEffect, useState } from "react";
 import axios from "axios";
+import AdminPage from './pages/Admin';
+import Games from './pages/Games';
+import Withdrawals from './pages/Withdrawals';
+import Payments from './pages/Payments';
+import Wins from './pages/Wins';
+import Losses from './pages/Losses';
 
 const Admin = () => {
-  const [transactions, setTransactions] = useState([]);
+  // const [transactions, setTransactions] = useState([]);
+  const [page, setPage] = useState('home');
 
-  useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_URL}/getTransactions`).then((response) => {
-      if (response.data.success) {
-        console.log(response.data.transactions);
-        setTransactions(response.data.transactions);
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   axios.get(`${process.env.REACT_APP_API_URL}/getTransactions`).then((response) => {
+  //     if (response.data.success) {
+  //       console.log(response.data.transactions);
+  //       setTransactions(response.data.transactions);
+  //     }
+  //   });
+  // }, []);
 
-  const updateTransaction = async (transactionId, status) => {
-    try {
-      await axios.post(`${process.env.REACT_APP_API_URL}/updateTransaction`, { transactionId, status });
-      axios.get(`${process.env.REACT_APP_API_URL}/getTransactions`).then((response) => {
-        if (response.data.success) {
-          console.log(response.data.transactions);
-          setTransactions(response.data.transactions);
-        }
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const updateTransaction = async (transactionId, status) => {
+  //   try {
+  //     await axios.post(`${process.env.REACT_APP_API_URL}/updateTransaction`, { transactionId, status });
+  //     axios.get(`${process.env.REACT_APP_API_URL}/getTransactions`).then((response) => {
+  //       if (response.data.success) {
+  //         console.log(response.data.transactions);
+  //         setTransactions(response.data.transactions);
+  //       }
+  //     });
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   return (
     <div className="adminPage">
-      <h1>Admin</h1>
-      <div className="adminTable">
+      {/* <h1>Admin</h1> */}
+      <div className="adminContent">
+        {page === 'home' && <AdminPage setPage={setPage} />}
+        {page === 'games' && <Games setPage={setPage} />}
+        {page === 'withdrawals' && <Withdrawals setPage={setPage} />}
+        {page === 'payments' && <Payments setPage={setPage} />}
+        {page === 'wins' && <Wins setPage={setPage} />}
+        {page === 'losses' && <Losses setPage={setPage} />}
+      </div>
+      {/* <div className="adminTable">
         <table>
           <thead>
             <tr>
@@ -59,7 +74,7 @@ const Admin = () => {
             ))}
           </tbody>
         </table>
-      </div>
+      </div> */}
     </div>
   );
 };

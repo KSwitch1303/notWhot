@@ -20,7 +20,7 @@ const socket = io.connect(apiUrl);
 const Home = () => {
   const [inGame, setInGame] = useState(false);
   const {page, setPage, room, setRoom, players, setPlayers, market, setMarket, playedCards, setPlayedCards, lobby, setLobby} = useContext(GameContext);
-  const {username, setUsername, balance, setBalance, loggedIn, setLoggedIn, setAccountName, setAccountNO, setBank} = useContext(UserContext);
+  const {username, setUsername, balance, setBalance, loggedIn, setLoggedIn, accountName, setAccountName, setAccountNO, setBank} = useContext(UserContext);
   const [homeStyle, setHomeStyle] = useState('homeContent');
   useEffect(() => {
     const tempLoggedIn = localStorage.getItem("loggedIn");
@@ -59,7 +59,7 @@ const Home = () => {
       <div className={homeStyle}>
         {page === "home" && <HomeContent setPage={setPage} username={username} setLobby={setLobby} balance={balance} setBalance={setBalance}/>}
         {page === "profile" && <Profile username={username} setPage={setPage}/>}
-        {page === "topup" && <Topup username={username} setPage={setPage}/>}
+        {page === "topup" && <Topup username={username} accountName={accountName} setPage={setPage}/>}
         {page === "withdraw" && <Withdraw username={username} setPage={setPage}/>}
         {page === "transactions" && <Transactions username={username} setPage={setPage}/>}
         {page === "createRoom" && <CreateRoom setPage={setPage} socket={socket} setRoom={setRoom} setPlayers={setPlayers} players={players} username={username} setUsername={setUsername}/>}

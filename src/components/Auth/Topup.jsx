@@ -5,22 +5,27 @@ import axios from 'axios';
 const apiUrl = process.env.REACT_APP_API_URL
 const Topup = (props) => {
   const [amount, setAmount] = useState("");
-  const [tno, setTno] = useState("");
+  // const [tno, setTno] = useState("");
   const [isPending, setIsPending] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsPending(true);
-    sendRequest();
+    if (amount < 100) {
+      alert("Amount must be greater than N100");
+      setIsPending(false);
+    } else {
+      sendRequest();
+    }
   }
 
   const sendRequest = async () => {
     try {
       const response = await axios.post(`${apiUrl}/addTransaction`, {
-        sender: props.username,
+        sender: props.accountName,
         amount: amount,
-        tno: tno,
-        receiver: "Misongo Ebimietei Favour"
+        detail: "topup",
+        receiver: "system"
       });
       const data = await response.data;
       if (data.success) {
@@ -51,7 +56,6 @@ const Topup = (props) => {
       <h3>Bank: Opay</h3>
       <form className="topupForm" onSubmit={handleSubmit}>
         <input disabled={isPending} onChange={(e) => setAmount(e.target.value)} value={amount} type="text" placeholder="Enter Amount Paid" required />
-        <input disabled={isPending} onChange={(e) => setTno(e.target.value)} value={tno} type="text" placeholder="Enter Transaction Number" required />
         <button type="submit" disabled={isPending}>{isPending ? "Processing..." : "Submit"}</button>
       </form>
       <button className="home-button" onClick={() => props.setPage("home")}>Home</button>

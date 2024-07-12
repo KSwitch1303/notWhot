@@ -42,6 +42,7 @@ const Topup = () => {
             <tr>
               <th>Date</th>
               <th>Amount</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
@@ -49,6 +50,7 @@ const Topup = () => {
               <tr key={transaction._id}>
                 <td>{transaction.date.split("T")[0]}</td>
                 <td>{transaction.amount}</td>
+                <td>{transaction.status}</td>
               </tr>
             ))}
           </tbody>

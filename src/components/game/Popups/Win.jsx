@@ -22,16 +22,17 @@ const Win = (props) => {
           }
           console.log(winStatus, winAmount);
           
-          localStorage.setItem('lobby', '');
-          localStorage.setItem('room', '');
+          
           
           props.socket.emit('endGame', {
-            room: props.roomCode,
+            roomCode: localStorage.getItem('room'),
             username: props.username,
             amount: winAmount,
             winStatus,
             wager: props.wager
           })
+          localStorage.setItem('lobby', '');
+          localStorage.setItem('room', '');
           localStorage.setItem('page', 'home');
           window.location.reload();
         }}>Exit</button>

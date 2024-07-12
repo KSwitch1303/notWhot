@@ -51,7 +51,7 @@ const Transactions = (props) => {
       </div>
       <button onClick={() => {
         if (histPage === "home") {
-          props.setPage("topup");
+          props.setPage("home");
         } else {
           setHistPage("home");
         }

@@ -49,7 +49,13 @@ const Transactions = (props) => {
       {histPage === "win" && <Win username={props.username} setHistPage={setHistPage} />}
       {histPage === "loss" && <Loss username={props.username} setHistPage={setHistPage} />}
       </div>
-      <button onClick={() => setHistPage("home")}>Home</button>
+      <button onClick={() => {
+        if (histPage === "home") {
+          props.setPage("topup");
+        } else {
+          setHistPage("home");
+        }
+      }}>Home</button>
     </div>
     // <div className="transactionsPage">
     //   <h1>Transactions</h1>

@@ -27,6 +27,7 @@ const Wins = (props) => {
       <table>
         <thead>
           <tr>
+            <th>Date</th>
             <th>Player</th>
             <th>Room Code</th>
             <th>Amount</th>
@@ -36,6 +37,7 @@ const Wins = (props) => {
         <tbody>
           {transactions.map((transaction) => (
             <tr key={transaction._id}>
+              <td>{transaction.date}</td>
               <td>{transaction.party1}</td>
               <td>{transaction.party2}</td>
               <td>{transaction.amount}</td>

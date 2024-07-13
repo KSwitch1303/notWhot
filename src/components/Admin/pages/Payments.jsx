@@ -30,6 +30,8 @@ const Payments = (props) => {
       <table>
         <thead>
           <tr>
+            <th>Date</th>
+            <th>Time</th>
             <th>Receiver</th>
             <th>Sender</th>
             <th>Amount</th>
@@ -40,6 +42,8 @@ const Payments = (props) => {
         <tbody>
           {transactions.map((transaction) => (
             <tr key={transaction._id}>
+              <td>{transaction.date.slice(0, 10)}</td>
+              <td>{transaction.date.slice(11, 16)}</td>
               <td>{transaction.party1}</td>
               <td>{transaction.party2}</td>
               <td>{transaction.amount}</td>

@@ -27,6 +27,8 @@ const Withdraw = (props) => {
     try {
       const response = await axios.post(`${apiUrl}/addWithdrawal`, {
         amount: amount,
+        username: localStorage.getItem("username"),
+        party1: bank,
         party2: accountNO
       });
       const data = await response.data;

@@ -26,7 +26,7 @@ const Win = (props) => {
           
           props.socket.emit('endGame', {
             roomCode: localStorage.getItem('room'),
-            username: props.username,
+            username: localStorage.getItem('username'),
             amount: winAmount,
             winStatus,
             wager: props.wager
@@ -34,7 +34,7 @@ const Win = (props) => {
           localStorage.setItem('lobby', '');
           localStorage.setItem('room', '');
           localStorage.setItem('page', 'home');
-          window.location.reload();
+          // window.location.reload();
         }}>Exit</button>
       </div>
     </div>

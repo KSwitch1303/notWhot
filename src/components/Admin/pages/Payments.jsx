@@ -4,6 +4,7 @@ import axios from "axios";
 const apiUrl = process.env.REACT_APP_API_URL;
 const Payments = (props) => {
   const [transactions, setTransactions] = useState([]);
+  const [isPending, setIsPending] = useState(false);
 
   useEffect(() => {
     getPayments();
@@ -19,6 +20,7 @@ const Payments = (props) => {
     } catch (error) {
       console.error(error);
     }
+    setIsPending(false);
   }
 
   return ( 
@@ -43,12 +45,14 @@ const Payments = (props) => {
               <td>{transaction.amount}</td>
               <td>{transaction.status}</td>
               <td>
-                <button onClick={async () => {
+                <button disabled={isPending} onClick={async () => {
+                  setIsPending(true);
                   if (transaction.status === "Approved") return;
                   await axios.post(`${apiUrl}/updateBalance`, { transactionId: transaction._id, status: "Approved", amount: transaction.amount });
                   getPayments();
-                }}>Approve</button>
-                <button onClick={async () => {
+                }}>{isPending ? "Approving..." : "Approve"}</button>
+                <button disabled={isPending} onClick={async () => {
+                  setIsPending(true);
                   if (transaction.status === "Approved") {
                     await axios.post(`${apiUrl}/reduceBalance`, { transactionId: transaction._id, status: "Failed", amount: transaction.amount });
                     getPayments();
@@ -56,7 +60,7 @@ const Payments = (props) => {
                   }                  
                   await axios.post(`${apiUrl}/updateBalance`, { transactionId: transaction._id, status: "Failed" });
                   getPayments();
-                }}>Failed</button>
+                }}>{isPending ? "Rejecting..." : "Reject"}</button>
               </td>
             </tr>
           ))}

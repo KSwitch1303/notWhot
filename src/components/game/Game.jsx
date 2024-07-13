@@ -5,7 +5,7 @@ import Sound2 from '../../Assets/Sounds/useMarket.wav';
 import INeed from './Popups/INeed';
 import Win from './Popups/Win';
 import Waiting from './Popups/Waiting';
-
+import Chat from './Popups/Chat';
 
 
 let pTurn = false;
@@ -15,8 +15,11 @@ const Game = (props) => {
   const [needPopup, setNeedPopup] = useState(false);
   const [need, setNeed] = useState('');
   const [neededCard, setNeededCard] = useState(localStorage.getItem("neededCard") || '');
-  const [winStatus, setWinStatus] = useState('');
-  const [winPopup, setWinPopup] = useState(false);
+  const [winStatus, setWinStatus] = useState(localStorage.getItem("winStatus") || '');
+  const [winPopup, setWinPopup] = useState(localStorage.getItem("winPopup") || false);
+  const [chatPopup, setChatPopup] = useState(false);
+  const [chat, setChat] = useState('');
+  const [opponentChat, setOpponentChat] = useState('');
   const [waitingPopup, setWaitingPopup] = useState(false);
   const [opponent, setOpponent] = useState('');
   const [needType, setNeedType] = useState('');
@@ -33,6 +36,9 @@ const Game = (props) => {
   useEffect(() => {
     localStorage.setItem("userID", userID);
   }, [userID]);
+  useEffect(() => {
+      props.socket.emit("chat", { roomCode: localStorage.getItem("room"), username: props.username, chat: chat });
+  },[chat])
   useEffect(() => {
     if (need !== '') {
       setSpecialCardUsed('I need');
@@ -81,6 +87,11 @@ const Game = (props) => {
       setOpponent(data.usersname);
       // localStorage.setItem("opponentID", opponentID);
       setWaitingPopup(true);
+    })
+    props.socket.on("receiveChat", (data) => {
+      if (data.username !== props.username) {
+        setOpponentChat(data.chat);
+      }
     })
 
     props.socket.on("playersRejoined", (data) => {
@@ -142,6 +153,8 @@ const Game = (props) => {
     props.socket.on("gameWon", (data) => {
       setWinStatus(data.players[localStorage.getItem("username")].status);
       setWinPopup(true);
+      localStorage.setItem('winPopup', true);
+      localStorage.setItem('winStatus', data.players[localStorage.getItem("username")].status);
     })
 
     props.socket.on("leaveGame", (data) => {
@@ -151,8 +164,13 @@ const Game = (props) => {
       // props.setRoomCode('');
       setWinPopup(false);
       setWinStatus('');
-      localStorage.setItem('lobby', '');
-      localStorage.setItem('room', '');
+      localStorage.removeItem('lobby');
+      localStorage.removeItem('room');
+      localStorage.removeItem('page');
+      localStorage.removeItem('pTurn');
+      localStorage.removeItem('neededCard');
+      localStorage.removeItem('winPopup');
+      localStorage.removeItem('winStatus');
       localStorage.setItem('page', 'home');
       window.location.reload();
     })
@@ -164,7 +182,12 @@ const Game = (props) => {
       // props.setRoomCode('');
       setWinPopup(false);
       setWinStatus('');
+      localStorage.setItem('lobby', '');
+      localStorage.setItem('room', '');
+      localStorage.setItem('page', 'home');
+      localStorage.setItem('pTurn', '');
       props.setPage('home');
+      window.location.reload();
     })
 
     props.socket.on("reconnected", (data) => {
@@ -349,10 +372,15 @@ const Game = (props) => {
       {Object.values(props.players).map((player) => (
         <div className="dasd" key={player.username}>
            {player.username !== props.username ? (
-            <div className="Gameplayer" key={player.username}>
+            <div className="Gameplayer" key={player.username} onClick={() => {
+              setChatPopup(true);
+            }} >
               <div className="otherplayers">
-                <h3>Opponent: {player.username} {player.turn && '(Turn)'}</h3>
+                <h3>Opponent: {player.username} {player.turn && '*'}</h3>
                 <h3>Cards: {player.cards.length}</h3>
+                <p>Tap to chat</p>
+                <p>You: {chat}</p>
+                <p>Opponent: {opponentChat}</p>
               </div>
             </div>
           ) : null}
@@ -385,7 +413,8 @@ const Game = (props) => {
      
       <INeed trigger={needPopup} setTrigger={setNeedPopup} need={need} setNeed={setNeed}  socket={props.socket} room={props.room} username={props.username} />
       <Win socket={props.socket} trigger={winPopup} setTrigger={setWinPopup} roomCode={props.room} username={props.username} winStatus={winStatus} wager={props.players[props.username].wager} />
-      <Waiting socket={props.socket} trigger={waitingPopup} setTrigger={setWaitingPopup} opponent={opponent} />
+      <Chat socket={props.socket} room={props.room} username={props.username} trigger={chatPopup} setTrigger={setChatPopup} setChat={setChat} />
+      {/* <Waiting socket={props.socket} trigger={waitingPopup} setTrigger={setWaitingPopup} opponent={opponent} /> */}
         </div>
       )}
       {/* <h1>Game Room: {props.room}</h1> */}

@@ -4,6 +4,7 @@ import axios from "axios";
 const apiUrl = process.env.REACT_APP_API_URL;
 const Withdrawals = (props) => {
   const [transactions, setTransactions] = useState([]);
+  const [isPending, setIsPending] = useState(false);
 
   useEffect(() => {
     getWithdrawals();
@@ -19,6 +20,7 @@ const Withdrawals = (props) => {
     } catch (error) {
       console.error(error);
     }
+    setIsPending(false);
   }
   return ( 
     <div className="withdrawals">
@@ -27,8 +29,8 @@ const Withdrawals = (props) => {
       <table>
         <thead>
           <tr>
-            <th>Receiver</th>
-            <th>Sender</th>
+            <th>Bank</th>
+            <th>User</th>
             <th>Amount</th>
             <th>Status</th> 
             <th>Action</th>
@@ -42,14 +44,16 @@ const Withdrawals = (props) => {
               <td>{transaction.amount}</td>
               <td>{transaction.status}</td>
               <td>
-                <button onClick={async () => {
+                <button disabled={isPending} onClick={async () => {
+                  setIsPending(true);
                   await axios.post(`${apiUrl}/updateTransaction`, { transactionId: transaction._id, status: "Approved" });
                   getWithdrawals();
-                }}>Approve</button>
-                <button onClick={async () => {
+                }}>{isPending ? "Approving..." : "Approve"}</button>
+                <button disabled={isPending} onClick={async () => {
+                  setIsPending(true);
                   await axios.post(`${apiUrl}/updateTransaction`, { transactionId: transaction._id, status: "Failed" });
                   getWithdrawals();
-                }}>Failed</button>
+                }}>{isPending ? "Rejecting..." : "Reject"}</button>
               </td>
             </tr>
           ))}

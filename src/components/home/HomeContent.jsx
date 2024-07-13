@@ -1,10 +1,16 @@
 import { useEffect } from "react";
 const HomeContent = (props) => {
   useEffect(() => {
-    localStorage.setItem('room', '')
-    localStorage.setItem('userID', '')
-    localStorage.setItem('pTurn', '')
-    localStorage.setItem('lobby', '')
+    localStorage.removeItem('room')
+    localStorage.removeItem('userID')
+    localStorage.removeItem('pTurn')
+    localStorage.removeItem('lobby')
+    localStorage.removeItem('winPopup');
+    localStorage.removeItem('winStatus');
+    localStorage.removeItem('waitingPopup');
+    localStorage.removeItem('timer');
+    localStorage.removeItem('opponent');
+    localStorage.removeItem('neededCard');
   },[])
   return ( 
     <div className="landing">

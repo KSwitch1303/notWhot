@@ -27,6 +27,7 @@ const Games = (props) => {
         <thead>
           <tr>
             <th>Date</th>
+            <th>Time</th>
             <th>Player 1</th>
             <th>Player 2</th>
             <th>Amount</th>
@@ -37,6 +38,7 @@ const Games = (props) => {
           {transactions.map((transaction) => (
             <tr key={transaction._id}>
               <td>{transaction.date}</td>
+              <td>{transaction.date.slice(11, 16)}</td>
               <td>{transaction.party1}</td>
               <td>{transaction.party2}</td>
               <td>{transaction.amount}</td>

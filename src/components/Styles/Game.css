@@ -122,6 +122,14 @@
   border-radius: 10px;
 }
 
+.green {
+  color: green;
+}
+
+.red {
+  color: red;
+}
+
 .playedCards {
   display: flex;
   flex-wrap: wrap;

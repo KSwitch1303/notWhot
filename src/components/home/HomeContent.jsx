@@ -43,6 +43,15 @@ const HomeContent = (props) => {
         window.localStorage.setItem("lobby", "500")
         props.setPage("lobby")
       }}>₦500</button>
+      <button onClick={() => {
+        if (props.balance < 1000) {
+          alert("Insufficient funds")
+          return
+        }
+        props.setLobby("1000")
+        window.localStorage.setItem("lobby", "1000")
+        props.setPage("lobby")
+      }}>₦1000</button>
       {/* <button onClick={() => props.setPage("createRoom")}>Create Room</button>
       <button onClick={() => props.setPage("joinRoom")}>Join Room</button> */}
     </div>

@@ -174,6 +174,8 @@ const Game = (props) => {
     });
 
     props.socket.on("gameWon", (data) => {
+      setWaitingPopup(false);
+      localStorage.removeItem('waitingPopup');
       setWinStatus(data.players[localStorage.getItem("username")].status);
       setWinPopup(true);
       localStorage.setItem('winPopup', true);

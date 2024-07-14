@@ -14,7 +14,7 @@ const Waiting = (props) => {
 
   useEffect(() => {
     timeHandler.current = setInterval(() => {
-      props.socket.emit("updateWaitTimer", { roomCode: localStorage.getItem("room") });
+      props.socket.emit("updateWaitTimer", { roomCode: localStorage.getItem("room"), username: localStorage.getItem("username") });
     }, 1000);
     return () => {
       clearInterval(timeHandler.current);

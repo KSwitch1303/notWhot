@@ -20,7 +20,7 @@ const Game = (props) => {
   const [chatPopup, setChatPopup] = useState(false);
   const [chat, setChat] = useState('');
   const [opponentChat, setOpponentChat] = useState('');
-  const [waitingPopup, setWaitingPopup] = useState(localStorage.getItem("waitingPopup") || false);
+  // const [waitingPopup, setWaitingPopup] = useState(localStorage.getItem("waitingPopup") || false);
   const [opponent, setOpponent] = useState('');
   const [needType, setNeedType] = useState('');
 

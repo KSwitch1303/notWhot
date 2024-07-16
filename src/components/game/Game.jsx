@@ -76,8 +76,9 @@ const Game = (props) => {
     }, 1000)
   };
   useEffect(() => {
+    if (!winPopup) {
       timerTick();
-    
+    }
       
     
 
@@ -201,18 +202,18 @@ const Game = (props) => {
     })
 
     props.socket.on("disconnectPlayer", () => {
-      props.setPlayers([]);
-      props.setMarket([]);
-      props.setPlayedCards([]);
+      // props.setPlayers([]);
+      // props.setMarket([]);
+      // props.setPlayedCards([]);
       // props.setRoomCode('');
-      setWinPopup(false);
-      setWinStatus('');
-      localStorage.setItem('lobby', '');
-      localStorage.setItem('room', '');
-      localStorage.setItem('page', 'home');
+      // setWinPopup(false);
+      // setWinStatus('');
+      // localStorage.setItem('lobby', '');
+      // localStorage.setItem('room', '');
+      // localStorage.setItem('page', 'home');
       localStorage.setItem('pTurn', '');
-      props.setPage('home');
-      window.location.reload();
+      // props.setPage('home');
+      // window.location.reload();
     })
 
     props.socket.on("reconnected", (data) => {

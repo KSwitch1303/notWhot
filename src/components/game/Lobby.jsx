@@ -75,7 +75,7 @@ const Lobby = (props) => {
   return (
     <div className="lobby">
       {/* <h1>Lobby {props.room}</h1> */}
-      <button disabled={isPending} className='leaveBtn' onClick={leaveRoom}>Leave Room</button>
+      <button className='leaveBtn' onClick={leaveRoom}>Leave Room</button>
       <div className="playerCard">
         {Object.values(props.players).map((player) => (
           <div className="player" key={player.username}>

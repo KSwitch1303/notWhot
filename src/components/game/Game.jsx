@@ -20,7 +20,7 @@ const Game = (props) => {
   const [chatPopup, setChatPopup] = useState(false);
   const [chat, setChat] = useState('');
   const [opponentChat, setOpponentChat] = useState('');
-  // const [waitingPopup, setWaitingPopup] = useState(localStorage.getItem("waitingPopup") || false);
+  const [waitingPopup, setWaitingPopup] = useState(localStorage.getItem("waitingPopup") || false);
   const [opponent, setOpponent] = useState('');
   const [needType, setNeedType] = useState('');
 
@@ -59,16 +59,16 @@ const Game = (props) => {
           if (neededCard) {
             console.log('need', neededCard);
             if (localStorage.getItem("waitingPopup") == 'true') {
-              console.log('waiting');
+              // console.log('waiting');
             }
             props.socket.emit("updateTimer", { roomCode: localStorage.getItem("room"), username: localStorage.getItem("username"), need: neededCard });
           }
           else {
             if (localStorage.getItem("waitingPopup") == 'true') {
-              console.log('waiting');
+              // console.log('waiting');
               return
             }
-            console.log('no need');
+            // console.log('no need');
             props.socket.emit("updateTimer", { roomCode: localStorage.getItem("room"), username: localStorage.getItem("username") });
           }
         }      

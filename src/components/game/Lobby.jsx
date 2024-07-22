@@ -52,11 +52,15 @@ const Lobby = (props) => {
       props.setMarket(data.market);
       props.setPlayedCards(data.playedCards);
       const response = await axios.post(`${apiUrl}/placeBet`, { roomCode: localStorage.getItem("room"), username: localStorage.getItem("username"), amount: localStorage.getItem("lobby") });
-      
+      let tempUsername = localStorage.getItem("username");
+      let pTurn = data.players[tempUsername].turn;
+      // console.logs(pTurn);
+      localStorage.setItem("pTurn", pTurn);
       // alert(response.data.message);
       
       props.setInGame(true);
       props.setPage("game");
+      localStorage.setItem('page', 'game');
     });
 
     props.socket.on("yourCards", (data) => {

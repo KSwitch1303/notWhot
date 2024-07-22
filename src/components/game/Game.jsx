@@ -8,12 +8,12 @@ import Waiting from './Popups/Waiting';
 import Chat from './Popups/Chat';
 
 
-let pTurn = false;
+let pTurn = localStorage.getItem("pTurn");
 const Game = (props) => {
   const userID  = localStorage.getItem("userID") || props.socket.id;
   const [specialCardUsed , setSpecialCardUsed] = useState('');
   const [needPopup, setNeedPopup] = useState(false);
-  const [need, setNeed] = useState(localStorage.getItem("need") || '');
+  const [need, setNeed] = useState(localStorage.getItem("neededCard") || '');
   const [neededCard, setNeededCard] = useState(localStorage.getItem("neededCard") || '');
   const [winStatus, setWinStatus] = useState(localStorage.getItem("winStatus") || '');
   const [winPopup, setWinPopup] = useState(localStorage.getItem("winPopup") || false);
@@ -41,13 +41,18 @@ const Game = (props) => {
   },[chat])
   useEffect(() => {
     if (need !== '') {
+      // alert(need);
       setSpecialCardUsed('I need');
-      props.socket.emit("playCard", { roomCode: localStorage.getItem("room"), username: props.username, card: needType, need: need });
-      setNeed('');
-      localStorage.setItem("need", '');
+      
+      if (localStorage.getItem("pTurn") === 'true') {
+        props.socket.emit("playCard", { roomCode: localStorage.getItem("room"), username: props.username, card: needType, need: need });
+        // setNeed('');
+        // localStorage.setItem("need", ''); 
+      }
       playSound();
     }
-    localStorage.setItem("need", need);
+    let tempNeed = localStorage.getItem("need") || '';
+    localStorage.setItem("need", tempNeed);
   },[need])
   const timerTick = () => {
     timeHandler.current = setInterval(() => {
@@ -56,12 +61,12 @@ const Game = (props) => {
 
         // props.socket.emit("updateTimer", { roomCode: localStorage.getItem("room"), username: localStorage.getItem("username") });
         if (!winStatus) {
-          if (neededCard) {
+          if (localStorage.getItem("need") !== '') {
             console.log('need', neededCard);
             if (localStorage.getItem("waitingPopup") == 'true') {
               // console.log('waiting');
             }
-            props.socket.emit("updateTimer", { roomCode: localStorage.getItem("room"), username: localStorage.getItem("username"), need: neededCard });
+            props.socket.emit("updateTimer", { roomCode: localStorage.getItem("room"), username: localStorage.getItem("username"), need: localStorage.getItem("need"), turn: localStorage.getItem("pTurn"), id: props.socket.id});
           }
           else {
             if (localStorage.getItem("waitingPopup") == 'true') {
@@ -69,13 +74,15 @@ const Game = (props) => {
               return
             }
             // console.log('no need');
-            props.socket.emit("updateTimer", { roomCode: localStorage.getItem("room"), username: localStorage.getItem("username") });
+            props.socket.emit("updateTimer", { roomCode: localStorage.getItem("room"), username: localStorage.getItem("username"), turn: localStorage.getItem("pTurn"), id: props.socket.id});
           }
         }      
         
     }, 1000)
   };
   useEffect(() => {
+    let neededCard = localStorage.getItem("neededCard") || '';
+    localStorage.setItem("neededCard", neededCard);
     if (!winPopup) {
       timerTick();
     }
@@ -89,6 +96,10 @@ const Game = (props) => {
   },[])
   useEffect(() => {
     // Handle any real-time game updates here
+    // props.socket.on("isItYourTurn", (data) => {
+    //   // eslint-disable-next-line react-hooks/rules-of-hooks
+    //   useMarket();
+    // })
     props.socket.on("waitingOnUser", (data) => {
       if (winPopup) {
         return
@@ -107,13 +118,15 @@ const Game = (props) => {
 
     props.socket.on("playersRejoined", (data) => {
       if (data.username === localStorage.getItem("username") && localStorage.getItem("waitingPopup") == 'true') {
-        // alert('players rejoined');
+        alert('players rejoined');
         setWaitingPopup(true);
+        localStorage.setItem("waitingPopup", true);
         props.setPlayers(data.players);
         props.setPlayedCards([]);
         props.setMarket(data.market);
         props.setPlayedCards(data.playedCards);
         setNeededCard(localStorage.getItem("neededCard"));
+        setNeed(localStorage.getItem("neededCard"));
         localStorage.setItem("userID", data.userID);
         return
       }
@@ -157,9 +170,11 @@ const Game = (props) => {
       playSound();
       if (data.cardNeeded) {
         setNeededCard(data.need);
+        localStorage.setItem("need", data.need);
         localStorage.setItem("neededCard", data.need);
       } else {
         setNeededCard('');
+        localStorage.setItem("need", '');
         localStorage.setItem("neededCard", '');
       }
       // alert(data.playedCards.length -1)
@@ -240,7 +255,12 @@ const Game = (props) => {
       props.setRoom(data.room);
       props.setLobby(localStorage.getItem("lobby"));
       pTurn = localStorage.getItem("pTurn");
-      props.socket.emit("updatePlayedCards", { roomCode: localStorage.getItem("room"), userID: localStorage.getItem("userID"), username: localStorage.getItem("username") });
+      if (localStorage.getItem("need") !== '') {
+        props.socket.emit("updatePlayedCards", { roomCode: localStorage.getItem("room"), userID: localStorage.getItem("userID"), username: localStorage.getItem("username") });  
+      }else {
+        props.socket.emit("updatePlayedCards", { roomCode: localStorage.getItem("room"), userID: localStorage.getItem("userID"), username: localStorage.getItem("username"), need: localStorage.getItem("need") });
+      }
+      
     })
     const handleTimerTicked = (data) => {
       setTimer(data.timer);
@@ -273,7 +293,7 @@ const Game = (props) => {
   };
 
   const useMarket = () => {
-    if (props.players[props.username].turn) {
+    // if (props.players[props.username].turn) {
       if (neededCard) {
         props.socket.emit("useMarket", { roomCode: localStorage.getItem("room"), username: props.username, need: neededCard });  
       } else{
@@ -282,7 +302,7 @@ const Game = (props) => {
       setChat('');
 
       playSound2();
-    }
+    // }
   };
 
   const playSound = () => {

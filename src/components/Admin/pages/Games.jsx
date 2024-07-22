@@ -4,6 +4,7 @@ import axios from "axios";
 const apiUrl = process.env.REACT_APP_API_URL;
 const Games = (props) => {
   const [transactions, setTransactions] = useState([]);
+  const [isPending, setIsPending] = useState(false);
   useEffect(() => {
     getGames();
   }, []);
@@ -11,13 +12,30 @@ const Games = (props) => {
     try {
       const response = await axios.get(`${apiUrl}/getGames`);
       if (response.data.success) {
-        setTransactions(response.data.transactions);
+        const unSortedTransactions = response.data.transactions;
+        const transactions = unSortedTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+        setTransactions(transactions);
       } else {
         console.error("Failed to fetch games");
       }
     } catch (error) {
       console.error(error);
     }
+  }
+  const forceEnd = async (transactionId) => {
+    setIsPending(true);
+    try {
+      const response = await axios.post(`${apiUrl}/forceEndGame`, { transactionId });
+      if (response.data.success) {
+        console.log(response.data.message);
+      } else {
+        console.error("Failed to force end game");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    getGames();
+    setIsPending(false);
   }
   return ( 
     <div className="games">
@@ -28,10 +46,11 @@ const Games = (props) => {
           <tr>
             <th>Date</th>
             <th>Time</th>
-            <th>Player 1</th>
-            <th>Player 2</th>
+            <th>Players</th>
+            <th>Room</th>
             <th>Amount</th>
-            <th>Status</th> 
+            <th>Status</th>
+            <th>Actions</th> 
           </tr>
         </thead>
         <tbody>
@@ -43,6 +62,14 @@ const Games = (props) => {
               <td>{transaction.party2}</td>
               <td>{transaction.amount}</td>
               <td>{transaction.status}</td>
+              <td><button 
+                disabled={isPending}
+                onClick={() => {
+                  if (transaction.status === "started") {
+                    forceEnd(transaction._id);
+                  }
+                }}
+              >{isPending ? "Pending..." : "Force End"}</button></td>
             </tr>
           ))}
         </tbody>

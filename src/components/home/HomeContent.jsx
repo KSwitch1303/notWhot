@@ -11,6 +11,7 @@ const HomeContent = (props) => {
     localStorage.removeItem('timer');
     localStorage.removeItem('opponent');
     localStorage.removeItem('neededCard');
+    localStorage.removeItem('need');
   },[])
   return ( 
     <div className="landing">

@@ -13,7 +13,9 @@ const Withdrawals = (props) => {
     try {
       const response = await axios.get(`${apiUrl}/getWithdrawals`);
       if (response.data.success) {
-        setTransactions(response.data.transactions);
+        const unSortedTransactions = response.data.transactions;
+        const transactions = unSortedTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+        setTransactions(transactions);
       } else {
         console.error("Failed to fetch withdrawals");
       }

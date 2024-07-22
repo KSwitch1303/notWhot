@@ -55,6 +55,7 @@ const Navbar = (props) => {
         <h1 className="withdraw" onClick={() => props.setPage("withdraw")} title="Withdraw"><i className="fa-solid fa-hand-holding-dollar"></i></h1>
         <h1 className='leaderboard' onClick={() => { props.setPage("leaderboard"); }} title="Leaderboard"><i className="fa-solid fa-trophy"></i></h1>
         <h1 className='transactions' onClick={() => props.setPage("transactions")} title="Transactions"><i className="fa-solid fa-receipt"></i></h1>
+        <h1 className='rules' onClick={() => props.setPage("rules")} title="Rules"><i className="fa-solid fa-book"></i></h1>
         <h1 className="mute" onClick={() => setIsMuted(!isMuted)} title="Mute">{isMuted ? <i className="fa-solid fa-volume-xmark" onClick={() => setIsMuted(false)}></i> : <i className="fa-solid fa-volume-high" onClick={() => setIsMuted(true)}></i>}</h1>
         <h1 className="logout" onClick={() => {
           localStorage.clear();
@@ -73,6 +74,7 @@ const Navbar = (props) => {
         <h1 className="withdraw" onClick={() => { props.setPage("withdraw"); toggleDropdown(); }}><i className="fa-solid fa-hand-holding-dollar"></i> Withdraw</h1>
         <h1 className='leaderboard' onClick={() => { props.setPage("leaderboard"); toggleDropdown(); }}><i className="fa-solid fa-trophy"></i> Leaderboard</h1>
         <h1 className='transactions' onClick={() => { props.setPage("transactions"); toggleDropdown(); }}><i className="fa-solid fa-receipt"></i> History</h1>
+        <h1 className='rules' onClick={() => { props.setPage("rules"); toggleDropdown(); }}><i className="fa-solid fa-book"></i> Rules</h1>
         <h1 className="mute" onClick={() => { setIsMuted(!isMuted); toggleDropdown(); }}>{isMuted ? <i className="fa-solid fa-volume-xmark"></i>  : <i className="fa-solid fa-volume-high"></i>}{isMuted ? " Unmute" : " Mute"}</h1>
         <h1 className="logout" onClick={() => { 
           localStorage.clear();

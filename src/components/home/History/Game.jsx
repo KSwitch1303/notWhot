@@ -20,7 +20,11 @@ const Game = () => {
         `${apiUrl}/getGame/${username}`
       );
       if (response.data.success) {
-        setTransactions(response.data.transactions);
+        const unsortedTransactions = response.data.transactions;
+        const sortedTransactions = unsortedTransactions.sort((a, b) => {
+          return new Date(b.date) - new Date(a.date);
+        })
+        setTransactions(sortedTransactions);
       } else {
         setError("Failed to fetch transactions.");
       }
@@ -48,8 +52,8 @@ const Game = () => {
           <tbody>
             {transactions.map((transaction) => (
               <tr key={transaction._id}>
-                <td>{transaction.party1}</td>
-                <td>{transaction.party2}</td>
+                <td>{transaction.party1.split(" VS ")[0]}</td>
+                <td>{transaction.party1.split(" VS ")[1]}</td>
                 <td>{transaction.amount}</td>
               </tr>
             ))}

@@ -20,7 +20,11 @@ const Win = () => {
         `${apiUrl}/getWin/${username}`
       );
       if (response.data.success) {
-        setTransactions(response.data.transactions);
+        const unsortedTransactions = response.data.transactions;
+        const sortedTransactions = unsortedTransactions.sort((a, b) => {
+          return new Date(b.date) - new Date(a.date);
+        })
+        setTransactions(sortedTransactions);
       } else {
         setError("Failed to fetch transactions.");
       }

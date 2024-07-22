@@ -1,7 +1,18 @@
 .rules p{
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+.rules span{
   font-size: 20px;
   font-weight: 500;
   margin-bottom: 10px;
+  color: red;
+} 
+.ruleH1{
+  margin-bottom: 10px;
+  text-align: center;
+  color: green;
 }
 .rules {
   justify-content: left;

@@ -293,6 +293,9 @@ const Game = (props) => {
   };
 
   const useMarket = () => {
+    if (!props.players[props.username].turn) {
+      return
+    }
     // if (props.players[props.username].turn) {
       if (neededCard) {
         props.socket.emit("useMarket", { roomCode: localStorage.getItem("room"), username: props.username, need: neededCard });  
@@ -453,7 +456,7 @@ const Game = (props) => {
     
       <div className="gameSpace">
         <div className="market">
-          <img className='usemarket' onClick={useMarket} disabled={!props.players[props.username].turn} src="/WhotCards/back.png" alt="usemarket" />
+          <img className='usemarket' onClick={useMarket} disabled={currentPlayer.username === localStorage.getItem("username")} src="/WhotCards/back.png" alt="usemarket" />
           {/* <button onClick={useMarket} disabled={!props.players[props.username].turn} style={{ backgroundImage: `url(/WhotCards/back.png)`}}>Use Market</button> */}
         </div>
         
